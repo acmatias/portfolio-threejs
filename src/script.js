@@ -66,10 +66,12 @@ mesh3.position.x = 2
 gltfLoader.load('/models/Scene2.glb', (gltf) => {
     // gltf.scene.scale.set(0.3, 0.3, 0.3)
     gltf.scene.position.set(-3.5, -2, -25)
+    gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
     scene.add(gltf.scene)
 
-    gui.add(gltf.scene.rotation, 'y').min(-Math.PI).max(Math.PI).step(0.001).name('rotation')
+    gui.add(gltf.scene.rotation, 'x').min(-Math.PI).max(Math.PI).step(0.001).name('rotationX')
+    gui.add(gltf.scene.rotation, 'y').min(-Math.PI).max(Math.PI).step(0.001).name('rotationY')
     gui.add(gltf.scene.position, 'x').min(-150).max(150).step(0.001).name('posX')
     gui.add(gltf.scene.position, 'y').min(-150).max(150).step(0.001).name('posY')
     gui.add(gltf.scene.position, 'z').min(-150).max(150).step(0.001).name('posZ')
@@ -163,9 +165,12 @@ scene.add(cameraGroup)
 
 // Base camera
 const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height, 0.1, 100)
-camera.position.z = 6
+camera.position.z = 8
 cameraGroup.add(camera)
 
+gui.add(camera.position, 'x').min(-50).max(50).step(0.001).name('camera posX')
+gui.add(camera.position, 'y').min(-50).max(50).step(0.001).name('camera posY')
+gui.add(camera.position, 'z').min(-50).max(50).step(0.001).name('camera posZ')
 /**
  * Renderer
  */
