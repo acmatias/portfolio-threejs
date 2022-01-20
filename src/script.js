@@ -177,12 +177,14 @@ gui.add(camera.position, 'z').min(-50).max(50).step(0.001).name('camera posZ')
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     alpha: true,
+    antialias: true,
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.physicallyCorrectLights = true
 renderer.outputEncoding = THREE.sRGBEncoding
-;(renderer.toneMapping = THREE.ACESFilmicToneMapping), (renderer.toneMappingExposure = 0.3)
+renderer.toneMapping = THREE.ACESFilmicToneMapping
+renderer.toneMappingExposure = 0.3
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFShadowMap
 
