@@ -75,7 +75,7 @@ gltfLoader.load('/models/Scene2.glb', (gltf) => {
     gui.add(gltf.scene.position, 'x').min(-150).max(150).step(0.001).name('posX')
     gui.add(gltf.scene.position, 'y').min(-150).max(150).step(0.001).name('posY')
     gui.add(gltf.scene.position, 'z').min(-150).max(150).step(0.001).name('posZ')
-    updateAllMaterials()
+    // updateAllMaterials()
 })
 
 // scene.add(mesh1, mesh2, mesh3)
@@ -112,7 +112,7 @@ const sectionMeshes = [mesh1, mesh2, mesh3]
 /**
  * Lights
  */
-const directionalLight = new THREE.DirectionalLight('#ffffff', 5)
+const directionalLight = new THREE.DirectionalLight('#ffffff', 10)
 directionalLight.position.set(0.25, 5, 5)
 directionalLight.castShadow = true
 directionalLight.shadow.camera.far = 15
