@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import * as dat from 'lil-gui'
 import gsap from 'gsap'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import waterVertexShader from './shaders/water/vertex.glsl'
 import waterFragmentShader from './shaders/water/fragment.glsl'
 import { getGPUTier } from 'detect-gpu'
@@ -19,6 +20,28 @@ import Stats from 'stats.js'
 const stats = new Stats()
 stats.showPanel(0)
 document.body.appendChild(stats.dom)
+
+/**
+ * Loaders
+ */
+const loadingBarElement = document.querySelector('.loading-bar')
+
+const loadingManager = new THREE.LoadingManager(
+    // Loaded
+    () => {
+        gsap.delayedCall(0.5, () => {
+            gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 3, value: 0 })
+            loadingBarElement.classList.add('ended')
+            loadingBarElement.style.transform = ''
+        })
+    },
+    // Progress
+    (itemUrl, itemsLoaded, itemsTotal) => {
+        const progressRatio = itemsLoaded / itemsTotal
+        loadingBarElement.style.transform = `scaleX(${progressRatio})`
+        console.log(progressRatio)
+    }
+)
 
 /**
  * Debug
@@ -59,10 +82,36 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 /**
+ * Overlay
+ */
+const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1)
+const overlayMaterial = new THREE.ShaderMaterial({
+    transparent: true,
+    uniforms: {
+        uAlpha: { value: 1 },
+    },
+    vertexShader: `
+         void main()
+         {
+             gl_Position =  vec4(position, 1.0);
+         }
+     `,
+    fragmentShader: `
+         uniform float uAlpha;
+         void main()
+         {
+             gl_FragColor = vec4(0.0, 0.0, 0.0, uAlpha);
+         }
+     `,
+})
+const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial)
+scene.add(overlay)
+
+/**
  * Loaders
  */
-const gltfLoader = new GLTFLoader()
-const textureLoader = new THREE.TextureLoader()
+const gltfLoader = new GLTFLoader(loadingManager)
+const textureLoader = new THREE.TextureLoader(loadingManager)
 
 /**
  * Objects
@@ -90,7 +139,7 @@ const waterMaterial = new THREE.ShaderMaterial({
     uniforms: {
         uTime: { value: 0 },
 
-        uBigWavesElevation: { value: 0.04 },
+        uBigWavesElevation: { value: 0.11 },
         uBigWavesFrequency: { value: new THREE.Vector2(0.24, 0.17) },
         uBigWavesSpeed: { value: 0.33 },
 
@@ -189,19 +238,41 @@ gltfLoader.load('/models/OceanScene.glb', (gltf) => {
     gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
     scene.add(gltf.scene)
-    updateAllMaterials()
+    // updateAllMaterials()
 })
+
+let mixer = null
+
+const boatGroup = new THREE.Group()
+scene.add(boatGroup)
+
+// fbxLoader.load('/models/Fishing-Idle.fbx', (fbx) => {
+//     // fbx.scene.scale.set(0.25, 0.25, 0.25)
+//     scene.add(fbx)
+
+//     gui.add(fbx.position, 'x').min(-10).max(10).step(0.001).name('modelPos X')
+//     gui.add(fbx.position, 'y').min(-10).max(10).step(0.001).name('modelPos Y')
+//     gui.add(fbx.position, 'z').min(-10).max(10).step(0.001).name('modelPos Z')
+
+//     // Animation
+//     mixer = new THREE.AnimationMixer(fbx.scene)
+//     console.log('====================================')
+//     console.log(fbx)
+//     console.log('====================================')
+//     // const action = mixer.clipAction(fbx.animations[2])
+//     // action.play()
+// })
 
 gltfLoader.load('/models/boat.glb', (gltf) => {
     // gltf.scene.scale.set(0.3, 0.3, 0.3)
     gltf.scene.position.set(-3.5, -2, -25)
     gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
-    scene.add(gltf.scene)
+    boatGroup.add(gltf.scene)
     gui.add(gltf.scene.rotation, 'y').min(-Math.PI).max(Math.PI).step(0.001).name('boatRotationY')
-    gui.add(gltf.scene.position, 'x').min(-150).max(150).step(0.001).name('boatPositionX')
-    updateAllMaterials()
+    // updateAllMaterials()
 })
+gui.add(boatGroup.position, 'y').min(-150).max(150).step(0.001).name('y')
 
 // scene.add(mesh1, mesh2, mesh3)
 
@@ -356,6 +427,9 @@ const tick = () => {
         mesh.rotation.y += deltaTime * 0.12
     }
     waterMaterial.uniforms.uTime.value = elapsedTime
+
+    boatGroup.position.y = Math.sin(elapsedTime) * 0.08
+
     // Render
     renderer.render(scene, camera)
 
