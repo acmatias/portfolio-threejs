@@ -25,6 +25,11 @@ document.body.appendChild(stats.dom)
  * Loaders
  */
 const loadingBarElement = document.querySelector('.loading-bar')
+const scrollElement = document.querySelector('.stop-scrolling')
+
+console.log('====================================')
+console.log(scrollElement)
+console.log('====================================')
 
 const loadingManager = new THREE.LoadingManager(
     // Loaded
@@ -32,6 +37,7 @@ const loadingManager = new THREE.LoadingManager(
         gsap.delayedCall(0.5, () => {
             gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 3, value: 0 })
             loadingBarElement.classList.add('ended')
+            scrollElement.classList.remove('stop-scrolling')
             loadingBarElement.style.transform = ''
         })
     },
@@ -39,7 +45,6 @@ const loadingManager = new THREE.LoadingManager(
     (itemUrl, itemsLoaded, itemsTotal) => {
         const progressRatio = itemsLoaded / itemsTotal
         loadingBarElement.style.transform = `scaleX(${progressRatio})`
-        console.log(progressRatio)
     }
 )
 
