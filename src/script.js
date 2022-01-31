@@ -3,11 +3,42 @@ import * as THREE from 'three'
 import * as dat from 'lil-gui'
 import gsap from 'gsap'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import waterVertexShader from './shaders/water/vertex.glsl'
+import waterFragmentShader from './shaders/water/fragment.glsl'
+import { getGPUTier } from 'detect-gpu'
+;(async () => {
+    const gpuTier = await getGPUTier()
+    console.log(gpuTier)
+})()
+
+import Stats from 'stats.js'
+
+/**
+ * Stats
+ */
+const stats = new Stats()
+stats.showPanel(0)
+document.body.appendChild(stats.dom)
 
 /**
  * Debug
  */
 const gui = new dat.GUI({ width: 400 })
+let guiToggle = true
+gui.show(gui._hidden)
+gui.open(gui._closed)
+
+window.addEventListener('keypress', (e) => {
+    if ((e.key === 'h' || e.key === 'H') && guiToggle == false) {
+        gui.show(guiToggle)
+        guiToggle = true
+    } else if ((e.key === 'h' || e.key === 'H') && guiToggle == true) {
+        gui.show(guiToggle)
+        guiToggle = false
+    }
+})
+
+const debugObject = {}
 
 const parameters = {
     materialColor: '#ffeded',
@@ -41,8 +72,97 @@ const textureLoader = new THREE.TextureLoader()
 const gradientTexture = textureLoader.load('textures/gradients/3.jpg')
 gradientTexture.magFilter = THREE.NearestFilter
 
-const auroraTexture = textureLoader.load('textures/maps/aurora.jpg')
+const auroraTexture = textureLoader.load('/textures/maps/aurora.jpg')
 scene.background = auroraTexture
+
+// Water
+const waterGeometry = new THREE.PlaneGeometry(4, 4, 512, 512)
+
+// Color
+debugObject.depthColor = '#186691'
+debugObject.surfaceColor = '#9bd8ff'
+
+// Material
+const waterMaterial = new THREE.ShaderMaterial({
+    vertexShader: waterVertexShader,
+    fragmentShader: waterFragmentShader,
+    side: THREE.DoubleSide,
+    uniforms: {
+        uTime: { value: 0 },
+
+        uBigWavesElevation: { value: 0.04 },
+        uBigWavesFrequency: { value: new THREE.Vector2(0.24, 0.17) },
+        uBigWavesSpeed: { value: 0.33 },
+
+        uSmallWavesElevation: { value: 0.08 },
+        uSmallWavesFrequency: { value: 0.31 },
+        uSmallWavesSpeed: { value: 0.12 },
+        uSmallIterations: { value: 4.0 },
+
+        uDepthColor: { value: new THREE.Color(debugObject.depthColor) },
+        uSurfaceColor: { value: new THREE.Color(debugObject.surfaceColor) },
+        uColorOffset: { value: 0.08 },
+        uColorMultiplier: { value: 5 },
+    },
+})
+
+// Debug
+gui.add(waterMaterial.uniforms.uBigWavesElevation, 'value')
+    .min(0)
+    .max(1)
+    .step(0.01)
+    .name('uBigWavesElavation')
+gui.add(waterMaterial.uniforms.uBigWavesFrequency.value, 'x')
+    .min(0)
+    .max(10)
+    .step(0.01)
+    .name('uBigWavesFrequencX')
+gui.add(waterMaterial.uniforms.uBigWavesFrequency.value, 'y')
+    .min(0)
+    .max(10)
+    .step(0.01)
+    .name('uBigWavesFrequencyY')
+gui.add(waterMaterial.uniforms.uBigWavesSpeed, 'value').min(0).max(4).step(0.01).name('uBigWavesSpeed')
+
+gui.add(waterMaterial.uniforms.uSmallWavesElevation, 'value')
+    .min(0)
+    .max(1)
+    .step(0.01)
+    .name('uSmallWavesElevation')
+gui.add(waterMaterial.uniforms.uSmallWavesFrequency, 'value')
+    .min(0)
+    .max(30)
+    .step(0.01)
+    .name('uSmallWavesFrequency')
+gui.add(waterMaterial.uniforms.uSmallWavesSpeed, 'value').min(0).max(4).step(0.01).name('uSmallWavesSpeed')
+gui.add(waterMaterial.uniforms.uSmallIterations, 'value').min(0).max(5).step(1).name('uSmallIterations')
+
+gui.addColor(debugObject, 'depthColor').onChange(() => {
+    waterMaterial.uniforms.uDepthColor.value.set(debugObject.depthColor)
+})
+gui.addColor(debugObject, 'surfaceColor').onChange(() => {
+    waterMaterial.uniforms.uSurfaceColor.value.set(debugObject.surfaceColor)
+})
+
+gui.add(waterMaterial.uniforms.uColorOffset, 'value').min(0).max(1).step(0.01).name('uColorOffset')
+gui.add(waterMaterial.uniforms.uColorMultiplier, 'value').min(0).max(10).step(0.01).name('uColorMultiplier')
+
+// Mesh
+const water = new THREE.Mesh(waterGeometry, waterMaterial)
+water.rotation.x = -1.34
+water.scale.set(18, 20, 20)
+water.position.x = 0
+water.position.y = -2
+water.position.z = -25.5
+scene.add(water)
+
+gui.add(water.position, 'x').min(-50).max(50).step(0.001).name('waterPos X')
+gui.add(water.position, 'y').min(-50).max(50).step(0.001).name('waterPos Y')
+gui.add(water.position, 'z').min(-50).max(50).step(0.001).name('waterPos Z')
+gui.add(water.rotation, 'x').min(-10).max(10).step(0.001).name('waterRot x')
+gui.add(water.rotation, 'y').min(-10).max(10).step(0.001).name('waterRot y')
+gui.add(water.rotation, 'z').min(-10).max(10).step(0.001).name('waterRot z')
+
 // Material
 const material = new THREE.MeshToonMaterial({
     color: parameters.materialColor,
@@ -63,51 +183,29 @@ mesh1.position.x = 2
 mesh2.position.x = -2
 mesh3.position.x = 2
 
-gltfLoader.load('/models/Scene2.glb', (gltf) => {
+gltfLoader.load('/models/OceanScene.glb', (gltf) => {
     // gltf.scene.scale.set(0.3, 0.3, 0.3)
     gltf.scene.position.set(-3.5, -2, -25)
     gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
     scene.add(gltf.scene)
+    updateAllMaterials()
+})
 
-    gui.add(gltf.scene.rotation, 'x').min(-Math.PI).max(Math.PI).step(0.001).name('rotationX')
-    gui.add(gltf.scene.rotation, 'y').min(-Math.PI).max(Math.PI).step(0.001).name('rotationY')
-    gui.add(gltf.scene.position, 'x').min(-150).max(150).step(0.001).name('posX')
-    gui.add(gltf.scene.position, 'y').min(-150).max(150).step(0.001).name('posY')
-    gui.add(gltf.scene.position, 'z').min(-150).max(150).step(0.001).name('posZ')
-    // updateAllMaterials()
+gltfLoader.load('/models/boat.glb', (gltf) => {
+    // gltf.scene.scale.set(0.3, 0.3, 0.3)
+    gltf.scene.position.set(-3.5, -2, -25)
+    gltf.scene.rotation.x = 0.2
+    gltf.scene.rotation.y = -1.801
+    scene.add(gltf.scene)
+    gui.add(gltf.scene.rotation, 'y').min(-Math.PI).max(Math.PI).step(0.001).name('boatRotationY')
+    gui.add(gltf.scene.position, 'x').min(-150).max(150).step(0.001).name('boatPositionX')
+    updateAllMaterials()
 })
 
 // scene.add(mesh1, mesh2, mesh3)
 
 const sectionMeshes = [mesh1, mesh2, mesh3]
-
-/**
- * Particles
- */
-// Geometry
-// const particlesCount = 200
-// const positions = new Float32Array(particlesCount * 3)
-
-// for (let i = 0; i < particlesCount; i++) {
-//     positions[i * 3 + 0] = (Math.random() - 0.5) * 10
-//     positions[i * 3 + 1] = objectDistance * 0.5 - Math.random() * objectDistance * sectionMeshes.length
-//     positions[i * 3 + 2] = (Math.random() - 0.5) * 5
-// }
-
-// const particlesGeometry = new THREE.BufferGeometry()
-// particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-
-// // Material
-// const particlesMaterial = new THREE.PointsMaterial({
-//     color: parameters.materialColor,
-//     sizeAttenuation: true,
-//     size: 0.03,
-// })
-
-// Points
-// const particles = new THREE.Points(particlesGeometry, particlesMaterial)
-// scene.add(particles)
 
 /**
  * Lights
@@ -239,6 +337,7 @@ const clock = new THREE.Clock()
 let previousTime = 0
 
 const tick = () => {
+    stats.begin()
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
@@ -256,12 +355,13 @@ const tick = () => {
         mesh.rotation.x += deltaTime * 0.1
         mesh.rotation.y += deltaTime * 0.12
     }
-
+    waterMaterial.uniforms.uTime.value = elapsedTime
     // Render
     renderer.render(scene, camera)
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick)
+    stats.end()
 }
 
 tick()
