@@ -15,13 +15,6 @@ import { getGPUTier } from 'detect-gpu'
 import Stats from 'stats.js'
 
 /**
- * Stats
- */
-const stats = new Stats()
-stats.showPanel(0)
-document.body.appendChild(stats.dom)
-
-/**
  * Html scripts ------------------------------------------------------------------------
  */
 
@@ -114,8 +107,16 @@ const loadingManager = new THREE.LoadingManager(
 )
 
 /**
- * Debug
+ * Debug and stats
  */
+
+const stats = new Stats()
+stats.showPanel(0)
+
+document.body.appendChild(stats.dom)
+stats.dom.style.display = 'none'
+let showStats = false
+
 const gui = new dat.GUI({ width: 400 })
 let guiToggle = true
 gui.show(gui._hidden)
@@ -128,6 +129,12 @@ window.addEventListener('keypress', (e) => {
     } else if ((e.key === 'h' || e.key === 'H') && guiToggle == true) {
         gui.show(guiToggle)
         guiToggle = false
+    } else if ((e.key === 'g' || e.key === 'G') && showStats == true) {
+        stats.dom.style.display = 'block'
+        showStats = false
+    } else if ((e.key === 'g' || e.key === 'G') && showStats == false) {
+        stats.dom.style.display = 'none'
+        showStats = true
     }
 })
 
