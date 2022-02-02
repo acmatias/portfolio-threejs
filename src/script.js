@@ -100,7 +100,7 @@ const loadingManager = new THREE.LoadingManager(
             scrollElement.classList.remove('stop-scrolling')
             loadingBarElement.style.transform = ''
             if (playSound) {
-                bellSound.volume = 0.8
+                bellSound.volume = 0.7
                 bellSound.currentTime = 0
                 bellSound.play()
             }
@@ -211,7 +211,7 @@ const waterMaterial = new THREE.ShaderMaterial({
 
         uBigWavesElevation: { value: 0.11 },
         uBigWavesFrequency: { value: new THREE.Vector2(0.24, 0.17) },
-        uBigWavesSpeed: { value: 0.33 },
+        uBigWavesSpeed: { value: 0.5 },
 
         uSmallWavesElevation: { value: 0.08 },
         uSmallWavesFrequency: { value: 0.31 },
@@ -289,18 +289,7 @@ const material = new THREE.MeshToonMaterial({
 })
 
 // Meshes
-const objectDistance = 4
-const mesh1 = new THREE.Mesh(new THREE.TorusGeometry(1, 0.4, 16, 60), material)
-const mesh2 = new THREE.Mesh(new THREE.ConeGeometry(1, 2, 32), material)
-const mesh3 = new THREE.Mesh(new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16), material)
-
-mesh1.position.y = -objectDistance * 0
-mesh2.position.y = -objectDistance * 1
-mesh3.position.y = -objectDistance * 2
-
-mesh1.position.x = 2
-mesh2.position.x = -2
-mesh3.position.x = 2
+const objectDistance = 2
 
 gltfLoader.load('/models/OceanScene.glb', (gltf) => {
     // gltf.scene.scale.set(0.3, 0.3, 0.3)
@@ -346,7 +335,7 @@ gui.add(boatGroup.position, 'y').min(-150).max(150).step(0.001).name('y')
 
 // scene.add(mesh1, mesh2, mesh3)
 
-const sectionMeshes = [mesh1, mesh2, mesh3]
+const sectionMeshes = [1, 2, 3]
 
 /**
  * Lights
@@ -452,13 +441,13 @@ window.addEventListener('scroll', () => {
 
     if (newSection != currentSection) {
         currentSection = newSection
-        gsap.to(sectionMeshes[currentSection].rotation, {
-            duration: 1.5,
-            ease: 'power2.inOut',
-            x: '+=6',
-            y: '+=3',
-            z: '+=1.5',
-        })
+        // gsap.to(sectionMeshes[currentSection].rotation, {
+        //     duration: 1.5,
+        //     ease: 'power2.inOut',
+        //     x: '+=6',
+        //     y: '+=3',
+        //     z: '+=1.5',
+        // })
         if (newSection === 1) {
             submergeSound.volume = 0.3
             submergeSound.currentTime = 0
@@ -504,10 +493,10 @@ const tick = () => {
     cameraGroup.position.y += (parallaxY - cameraGroup.position.y) * 5 * deltaTime
 
     // Animate meshes
-    for (const mesh of sectionMeshes) {
-        mesh.rotation.x += deltaTime * 0.1
-        mesh.rotation.y += deltaTime * 0.12
-    }
+    // for (const mesh of sectionMeshes) {
+    //     mesh.rotation.x += deltaTime * 0.1
+    //     mesh.rotation.y += deltaTime * 0.12
+    // }
     waterMaterial.uniforms.uTime.value = elapsedTime
 
     boatGroup.position.y = Math.sin(elapsedTime) * 0.08
