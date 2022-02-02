@@ -1,10 +1,18 @@
+@import 'landing.css';
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    text-decoration: none;
+    list-style-type: none;
+    font-family: 'Baloo Da 2', cursive;
 }
 
 html {
     background: #1e1a20;
+    font-size: 62.5%;
+    scroll-behavior: smooth;
 }
 
 /* html,
@@ -38,9 +46,9 @@ body
     padding-right: 10%;
 }
 
-section:nth-child(odd) {
+/* section:nth-child(odd) {
     justify-content: flex-end;
-}
+} */
 
 .loading-bar {
     position: absolute;

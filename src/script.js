@@ -22,15 +22,75 @@ stats.showPanel(0)
 document.body.appendChild(stats.dom)
 
 /**
+ * Html scripts ------------------------------------------------------------------------
+ */
+
+// Navbar
+const menu = document.querySelector('.menu')
+const navbar = document.querySelector('.navbar')
+
+menu.addEventListener('click', () => {
+    navbar.classList.toggle('change')
+    menu.classList.toggle('change')
+})
+// End of Navbar
+
+// Section 2 Video
+// const video = document.querySelector('.video')
+// const btn = document.querySelector('.buttons button i')
+// const bar = document.querySelector('.video-bar')
+
+// const playPause = () => {
+//     if (video.paused) {
+//         video.play()
+//         btn.className = 'far fa-pause-circle'
+//         video.style.opacity = '.7'
+//     } else {
+//         video.pause()
+//         btn.className = 'far fa-play-circle'
+//         video.style.opacity = '.3'
+//     }
+// }
+
+// btn.addEventListener('click', () => {
+//     playPause()
+// })
+
+// video.addEventListener('timeupdate', () => {
+//     console.log(video.currentTime, video.duration)
+//     const barWidth = video.currentTime / video.duration
+//     bar.style.width = `${barWidth * 100}%`
+//     if (video.ended) {
+//         btn.className = 'far fa-play-circle'
+//         video.style.opacity = '.3'
+//     }
+// })
+// End of Section 2 Video
+
+// var swiper = new Swiper('.swiper-container', {
+//     effect: 'coverflow',
+//     grabCursor: true,
+//     centeredSlides: true,
+//     slidesPerView: 'auto',
+//     coverflowEffect: {
+//         rotate: 70,
+//         stretch: 0,
+//         depth: 100,
+//         modifier: 1,
+//         slideShadows: true,
+//     },
+// })
+
+// --------------------------------------------------------------------------------------
+
+/**
  * Loaders
  */
 const loadingBarElement = document.querySelector('.loading-bar')
 const scrollElement = document.querySelector('.stop-scrolling')
 
-console.log('====================================')
-console.log(scrollElement)
-console.log('====================================')
-
+const bellSound = new Audio('/sounds/ship-bell.mp3')
+let playSound = true
 const loadingManager = new THREE.LoadingManager(
     // Loaded
     () => {
@@ -39,6 +99,11 @@ const loadingManager = new THREE.LoadingManager(
             loadingBarElement.classList.add('ended')
             scrollElement.classList.remove('stop-scrolling')
             loadingBarElement.style.transform = ''
+            if (playSound) {
+                bellSound.volume = 0.8
+                bellSound.currentTime = 0
+                bellSound.play()
+            }
         })
     },
     // Progress
@@ -377,6 +442,9 @@ gui.add(renderer, 'toneMapping', {
 let scrollY = window.scrollY
 let currentSection = 0
 
+const submergeSound = new Audio('/sounds/submerge.mp3')
+const emergeSound = new Audio('/sounds/emerge.mp3')
+
 window.addEventListener('scroll', () => {
     scrollY = window.scrollY * 10
 
@@ -391,6 +459,15 @@ window.addEventListener('scroll', () => {
             y: '+=3',
             z: '+=1.5',
         })
+        if (newSection === 1) {
+            submergeSound.volume = 0.3
+            submergeSound.currentTime = 0
+            submergeSound.play()
+        } else if (newSection === 0) {
+            emergeSound.volume = 0.3
+            emergeSound.currentTime = 0
+            emergeSound.play()
+        }
     }
 })
 
