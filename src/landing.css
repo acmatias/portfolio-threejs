@@ -168,6 +168,7 @@
     transform: translateZ(8rem);
     opacity: 0;
     letter-spacing: 3rem;
+    cursor: context-menu;
 }
 
 .heading-1 {
@@ -248,14 +249,14 @@
     top: 200px;
     width: 30rem;
     height: 6rem;
-    background: linear-gradient(to right, #9b0e0e, #7a1010);
+    background: linear-gradient(to right, #c45d5d, #610909);
     color: #fff;
     font-size: 2rem;
     text-transform: uppercase;
     border-radius: 3rem;
     border: 0.1rem solid #800505;
     box-shadow: 1rem 2rem 3rem rgba(0, 0, 0, 0.5);
-    text-shadow: 0.6rem 0.3rem 0.2rem rgba(0, 0, 0, 0.4);
+    text-shadow: 0.4rem 0.2rem 0.1rem rgba(0, 0, 0, 0.4);
     cursor: pointer;
     opacity: 0;
     visibility: hidden;
@@ -265,7 +266,8 @@
 }
 
 .banner-btn.two {
-    background: linear-gradient(to right, #a807e7, #cc46d8);
+    background: linear-gradient(to right, #07e7c2, #7071a8);
+    border: 0.1rem solid #056780;
 }
 
 .banner-btn::before {
