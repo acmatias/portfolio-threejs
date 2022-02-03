@@ -92,9 +92,9 @@ const loadingManager = new THREE.LoadingManager(
             scrollElement.classList.remove('stop-scrolling')
             loadingBarElement.style.transform = ''
             if (playSound) {
-                waveSound.play()
-                waveSound.loop = true
-                waveSound.volume = 0.08
+                // waveSound.play()
+                // waveSound.loop = true
+                // waveSound.volume = 0.08
 
                 bellSound.volume = 0.7
                 bellSound.currentTime = 0
@@ -435,7 +435,7 @@ gui.add(renderer, 'toneMapping', {
 let scrollY = window.scrollY
 let currentSection = 0
 
-const waveSound = new Audio('/sounds/wavesSound.mp3')
+// const waveSound = new Audio('/sounds/wavesSound.mp3')
 const submergeSound = new Audio('/sounds/submerge.mp3')
 const emergeSound = new Audio('/sounds/emerge.mp3')
 const bubbleSound = new Audio('/sounds/bubbles.mp3')
@@ -459,12 +459,12 @@ window.addEventListener('scroll', () => {
             submergeSound.currentTime = 0
             submergeSound.play()
 
-            waveSound.volume = 0.008
+            // waveSound.volume = 0.008
         } else if (newSection === 0) {
             emergeSound.volume = 0.3
             emergeSound.currentTime = 0
             emergeSound.play()
-            waveSound.volume = 0.08
+            // waveSound.volume = 0.08
         } else if (newSection === 4) {
             bubbleSound.play()
         }
