@@ -9,9 +9,8 @@ import waterFragmentShader from './shaders/water/fragment.glsl'
 import { getGPUTier } from 'detect-gpu'
 ;(async () => {
     const gpuTier = await getGPUTier()
-    console.log(gpuTier)
+    // console.log(gpuTier)
 })()
-
 import Stats from 'stats.js'
 
 /**
@@ -93,6 +92,10 @@ const loadingManager = new THREE.LoadingManager(
             scrollElement.classList.remove('stop-scrolling')
             loadingBarElement.style.transform = ''
             if (playSound) {
+                waveSound.play()
+                waveSound.loop = true
+                waveSound.volume = 0.08
+
                 bellSound.volume = 0.7
                 bellSound.currentTime = 0
                 bellSound.play()
@@ -297,37 +300,38 @@ const material = new THREE.MeshToonMaterial({
 
 // Meshes
 const objectDistance = 2
+let mixer = null
 
 gltfLoader.load('/models/OceanScene.glb', (gltf) => {
-    // gltf.scene.scale.set(0.3, 0.3, 0.3)
     gltf.scene.position.set(-3.5, -2, -25)
     gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
     scene.add(gltf.scene)
     // updateAllMaterials()
 })
+const tresureChestGroup = new THREE.Group()
+scene.add(tresureChestGroup)
+let testToggle = { test: false }
+gltfLoader.load('/models/tresureChest.glb', (gltf) => {
+    gltf.scene.position.set(-3.5, -2, -25)
+    gltf.scene.rotation.x = 0.2
+    gltf.scene.rotation.y = -1.801
+    tresureChestGroup.add(gltf.scene)
+    mixer = new THREE.AnimationMixer(gltf.scene)
+    let chestOpen = mixer.clipAction(getAnimation(gltf, 'chestOpen'))
 
-let mixer = null
+    if (testToggle.test) {
+        chestOpen.play()
+        chestOpen.clampWhenFinished = true
+        chestOpen.loop = THREE.LoopOnce
+    }
 
+    // updateAllMaterials()
+})
+
+gui.add(testToggle, 'test')
 const boatGroup = new THREE.Group()
 scene.add(boatGroup)
-
-// fbxLoader.load('/models/Fishing-Idle.fbx', (fbx) => {
-//     // fbx.scene.scale.set(0.25, 0.25, 0.25)
-//     scene.add(fbx)
-
-//     gui.add(fbx.position, 'x').min(-10).max(10).step(0.001).name('modelPos X')
-//     gui.add(fbx.position, 'y').min(-10).max(10).step(0.001).name('modelPos Y')
-//     gui.add(fbx.position, 'z').min(-10).max(10).step(0.001).name('modelPos Z')
-
-//     // Animation
-//     mixer = new THREE.AnimationMixer(fbx.scene)
-//     console.log('====================================')
-//     console.log(fbx)
-//     console.log('====================================')
-//     // const action = mixer.clipAction(fbx.animations[2])
-//     // action.play()
-// })
 
 gltfLoader.load('/models/boat.glb', (gltf) => {
     // gltf.scene.scale.set(0.3, 0.3, 0.3)
@@ -340,9 +344,10 @@ gltfLoader.load('/models/boat.glb', (gltf) => {
 })
 gui.add(boatGroup.position, 'y').min(-150).max(150).step(0.001).name('y')
 
-// scene.add(mesh1, mesh2, mesh3)
-
-const sectionMeshes = [1, 2, 3]
+/**
+ * Raycaster
+ */
+const raycaster = new THREE.Raycaster()
 
 /**
  * Lights
@@ -360,14 +365,6 @@ gui.add(directionalLight.position, 'x').min(-5).max(5).step(0.001).name('moonLig
 gui.add(directionalLight.position, 'y').min(-5).max(5).step(0.001).name('moonLightY')
 gui.add(directionalLight.position, 'z').min(-5).max(5).step(0.001).name('moonLightZ')
 gui.add(directionalLight.shadow, 'normalBias').min(0).max(0.1).step(0.0001)
-
-const spotLight = new THREE.PointLight('#ffffff', 10)
-spotLight.position.set(0, 1.2, 0.6)
-gui.add(spotLight, 'intensity').min(0).max(10).step(0.001).name('lightIntensity')
-gui.add(spotLight.position, 'x').min(-5).max(5).step(0.001).name('lightX')
-gui.add(spotLight.position, 'y').min(-5).max(5).step(0.001).name('lightY')
-gui.add(spotLight.position, 'z').min(-5).max(5).step(0.001).name('lightZ')
-scene.add(spotLight)
 
 /**
  * Sizes
@@ -438,13 +435,15 @@ gui.add(renderer, 'toneMapping', {
 let scrollY = window.scrollY
 let currentSection = 0
 
+const waveSound = new Audio('/sounds/wavesSound.mp3')
 const submergeSound = new Audio('/sounds/submerge.mp3')
 const emergeSound = new Audio('/sounds/emerge.mp3')
+const bubbleSound = new Audio('/sounds/bubbles.mp3')
 
 window.addEventListener('scroll', () => {
     scrollY = window.scrollY * 10
 
-    const newSection = Math.round(scrollY / sizes.height)
+    const newSection = Math.round(scrollY / sizes.height) / 5
 
     if (newSection != currentSection) {
         currentSection = newSection
@@ -459,10 +458,15 @@ window.addEventListener('scroll', () => {
             submergeSound.volume = 0.3
             submergeSound.currentTime = 0
             submergeSound.play()
+
+            waveSound.volume = 0.008
         } else if (newSection === 0) {
             emergeSound.volume = 0.3
             emergeSound.currentTime = 0
             emergeSound.play()
+            waveSound.volume = 0.08
+        } else if (newSection === 4) {
+            bubbleSound.play()
         }
     }
 })
@@ -479,17 +483,71 @@ window.addEventListener('mousemove', (event) => {
     cursor.y = event.clientY / sizes.height - 0.5
 })
 
+window.addEventListener('click', () => {
+    if (currentIntersect) {
+        // if (currentIntersect.object === object1) {
+        //     console.log('click on object 1');
+        // } else if (currentIntersect.object === object2) {
+        //     console.log('click on object 2');
+        // } else if (currentIntersect.object === object3) {
+        //     console.log('click on object 3');
+        // }
+        switch (currentIntersect.object) {
+            case tresureChestGroup:
+                console.log('click on object 1')
+                break
+            case object2:
+                console.log('click on object 2')
+                break
+            case object3:
+                console.log('click on object 3')
+                break
+        }
+    }
+})
+
+function getAnimation(gltf, name) {
+    let result
+    gltf.animations.forEach((animation) => {
+        if (animation.name === name) {
+            result = animation
+            return
+        }
+    })
+    if (result == null) {
+        console.error('animation: ' + name + ' cannot be found!')
+    }
+    return result
+}
+
 /**
  * Animate
  */
 const clock = new THREE.Clock()
 let previousTime = 0
+let currentIntersect = null
 
 const tick = () => {
     stats.begin()
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
+
+    // Cast a ray
+    raycaster.setFromCamera(cursor, camera)
+    const objectsToTest = [tresureChestGroup]
+    const intersects = raycaster.intersectObjects(objectsToTest)
+    // if (intersects.length) {
+    //     if (currentIntersect === null) {
+    //         console.log('mouse enter')
+    //     }
+    //     currentIntersect = intersects[0]
+    // } else {
+    //     if (currentIntersect) {
+    //         console.log('mouse leave')
+    //     }
+    //     currentIntersect = null
+    // }
 
     // Animate camera
     camera.position.y = (-scrollY / sizes.height) * objectDistance
@@ -499,11 +557,10 @@ const tick = () => {
     cameraGroup.position.x += (parallaxX - cameraGroup.position.x) * 5 * deltaTime
     cameraGroup.position.y += (parallaxY - cameraGroup.position.y) * 5 * deltaTime
 
-    // Animate meshes
-    // for (const mesh of sectionMeshes) {
-    //     mesh.rotation.x += deltaTime * 0.1
-    //     mesh.rotation.y += deltaTime * 0.12
-    // }
+    // Model animation
+    if (mixer) {
+        mixer.update(deltaTime)
+    }
     waterMaterial.uniforms.uTime.value = elapsedTime
 
     boatGroup.position.y = Math.sin(elapsedTime) * 0.08
