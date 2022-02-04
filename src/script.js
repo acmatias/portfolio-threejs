@@ -310,6 +310,16 @@ const material = new THREE.MeshToonMaterial({
 const objectDistance = 2
 let mixer = null
 
+const cloudGroup = new THREE.Group()
+scene.add(cloudGroup)
+gltfLoader.load('/models/clouds.glb', (gltf) => {
+    gltf.scene.position.set(-3.5, -2, -25)
+    gltf.scene.rotation.x = 0.2
+    gltf.scene.rotation.y = -1.801
+    cloudGroup.add(gltf.scene)
+    // updateAllMaterials()
+})
+
 gltfLoader.load('/models/OceanScene.glb', (gltf) => {
     gltf.scene.position.set(-3.5, -2, -25)
     gltf.scene.rotation.x = 0.2
@@ -573,6 +583,8 @@ const tick = () => {
     waterMaterial.uniforms.uTime.value = elapsedTime
 
     boatGroup.position.y = Math.sin(elapsedTime) * 0.08
+
+    cloudGroup.position.x = Math.sin(elapsedTime) * 0.5
 
     // Render
     renderer.render(scene, camera)
