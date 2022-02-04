@@ -447,6 +447,7 @@ window.addEventListener('scroll', () => {
 
     if (newSection != currentSection) {
         currentSection = newSection
+
         // gsap.to(sectionMeshes[currentSection].rotation, {
         //     duration: 1.5,
         //     ease: 'power2.inOut',
@@ -455,13 +456,13 @@ window.addEventListener('scroll', () => {
         //     z: '+=1.5',
         // })
         if (newSection === 1) {
-            submergeSound.volume = 0.3
+            submergeSound.volume = 0.1
             submergeSound.currentTime = 0
             submergeSound.play()
 
             waveSound.volume = 0.008
         } else if (newSection === 0) {
-            emergeSound.volume = 0.3
+            emergeSound.volume = 0.4
             emergeSound.currentTime = 0
             emergeSound.play()
             waveSound.volume = 0.08
