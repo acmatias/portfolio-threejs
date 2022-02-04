@@ -346,6 +346,14 @@ gltfLoader.load('/models/tresureChest.glb', (gltf) => {
 
     // updateAllMaterials()
 })
+const fishGroup = new THREE.Group()
+scene.add(fishGroup)
+gltfLoader.load('/models/anglerFish.glb', (gltf) => {
+    gltf.scene.position.set(-3.5, -2, -25)
+    gltf.scene.rotation.x = 0.2
+    gltf.scene.rotation.y = -1.801
+    fishGroup.add(gltf.scene)
+})
 
 gui.add(testToggle, 'test')
 const boatGroup = new THREE.Group()
