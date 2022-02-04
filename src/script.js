@@ -4,6 +4,7 @@ import * as dat from 'lil-gui'
 import gsap from 'gsap'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 import waterVertexShader from './shaders/water/vertex.glsl'
 import waterFragmentShader from './shaders/water/fragment.glsl'
 import { getGPUTier } from 'detect-gpu'
@@ -190,7 +191,14 @@ scene.add(overlay)
 /**
  * Loaders
  */
+
+const dracoLoader = new DRACOLoader(loadingManager)
+dracoLoader.setDecoderPath('/draco/')
+
 const gltfLoader = new GLTFLoader(loadingManager)
+gltfLoader.setDRACOLoader(dracoLoader)
+
+// const gltfLoader = new GLTFLoader(loadingManager)
 const textureLoader = new THREE.TextureLoader(loadingManager)
 
 /**
