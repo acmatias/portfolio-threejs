@@ -309,6 +309,7 @@ const material = new THREE.MeshToonMaterial({
 // Meshes
 const objectDistance = 2
 let mixer = null
+let mixer1 = null
 
 const cloudGroup = new THREE.Group()
 scene.add(cloudGroup)
@@ -317,7 +318,19 @@ gltfLoader.load('/models/clouds.glb', (gltf) => {
     gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
     cloudGroup.add(gltf.scene)
-    // updateAllMaterials()
+    // Animation
+    mixer1 = new THREE.AnimationMixer(gltf.scene)
+    const cloudMove1 = mixer1.clipAction(getAnimation(gltf, 'cloudAction1'))
+    const cloudMove2 = mixer1.clipAction(getAnimation(gltf, 'cloudAction2'))
+    const cloudMove3 = mixer1.clipAction(getAnimation(gltf, 'cloudAction3'))
+
+    cloudMove1.play()
+    cloudMove2.play()
+    cloudMove3.play()
+    cloudMove1.timeScale = 1 / 5 // add this
+    cloudMove2.timeScale = 1 / 5 // add this
+    cloudMove3.timeScale = 1 / 5 // add this
+    console.log(mixer)
 })
 
 gltfLoader.load('/models/OceanScene.glb', (gltf) => {
@@ -327,6 +340,7 @@ gltfLoader.load('/models/OceanScene.glb', (gltf) => {
     scene.add(gltf.scene)
     // updateAllMaterials()
 })
+
 const tresureChestGroup = new THREE.Group()
 scene.add(tresureChestGroup)
 let testToggle = { test: false }
@@ -336,13 +350,10 @@ gltfLoader.load('/models/tresureChest.glb', (gltf) => {
     gltf.scene.rotation.y = -1.801
     tresureChestGroup.add(gltf.scene)
     mixer = new THREE.AnimationMixer(gltf.scene)
-    let chestOpen = mixer.clipAction(getAnimation(gltf, 'chestOpen'))
+    const chestOpen = mixer.clipAction(getAnimation(gltf, 'chestOpen'))
 
-    if (testToggle.test) {
-        chestOpen.play()
-        chestOpen.clampWhenFinished = true
-        chestOpen.loop = THREE.LoopOnce
-    }
+    chestOpen.play()
+    chestOpen.timeScale = 2
 
     // updateAllMaterials()
 })
@@ -588,11 +599,12 @@ const tick = () => {
     if (mixer) {
         mixer.update(deltaTime)
     }
+    if (mixer1) {
+        mixer1.update(deltaTime)
+    }
     waterMaterial.uniforms.uTime.value = elapsedTime
 
     boatGroup.position.y = Math.sin(elapsedTime) * 0.08
-
-    cloudGroup.position.x = Math.sin(elapsedTime) * 0.5
 
     // Render
     renderer.render(scene, camera)
