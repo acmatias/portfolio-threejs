@@ -79,34 +79,45 @@ menu.addEventListener('click', () => {
 /**
  * Loaders
  */
+let volumeParameters = {
+    volume: false,
+    waveVolume: 0.08,
+    bellVolume: 0.7,
+    submergeVolume: 0.1,
+    emergeVolume: 0.4,
+    newWaveVolume: 0.008,
+    bubbleVolume: 1,
+}
 const loadingBarElement = document.querySelector('.loading-bar')
 const scrollElement = document.querySelector('.stop-scrolling')
 
+const waveSound = new Audio('/sounds/wavesSound.mp3')
 const bellSound = new Audio('/sounds/ship-bell.mp3')
-let playSound = true
+
 const loadingManager = new THREE.LoadingManager(
     // Loaded
     () => {
-        gsap.delayedCall(0.5, () => {
-            gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 3, value: 0 })
-            loadingBarElement.classList.add('ended')
-            scrollElement.classList.remove('stop-scrolling')
-            loadingBarElement.style.transform = ''
-            if (playSound) {
+        gsap.delayedCall(
+            0.5,
+            () => {
+                gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 3, value: 0 })
+                loadingBarElement.classList.add('ended')
+                scrollElement.classList.remove('stop-scrolling')
+                loadingBarElement.style.transform = ''
                 waveSound.play()
                 waveSound.loop = true
-                waveSound.volume = 0.08
+                waveSound.volume = volumeParameters.waveVolume
 
-                bellSound.volume = 0.7
+                bellSound.volume = volumeParameters.bellVolume
                 bellSound.currentTime = 0
                 bellSound.play()
+            },
+            // Progress
+            (itemUrl, itemsLoaded, itemsTotal) => {
+                const progressRatio = itemsLoaded / itemsTotal
+                loadingBarElement.style.transform = `scaleX(${progressRatio})`
             }
-        })
-    },
-    // Progress
-    (itemUrl, itemsLoaded, itemsTotal) => {
-        const progressRatio = itemsLoaded / itemsTotal
-        loadingBarElement.style.transform = `scaleX(${progressRatio})`
+        )
     }
 )
 
@@ -308,21 +319,21 @@ const material = new THREE.MeshToonMaterial({
 
 // Meshes
 const objectDistance = 2
-let mixer = null
-let mixer1 = null
 
 const cloudGroup = new THREE.Group()
 scene.add(cloudGroup)
+
+let cloudMixer = null
 gltfLoader.load('/models/clouds.glb', (gltf) => {
     gltf.scene.position.set(-3.5, -2, -25)
     gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
     cloudGroup.add(gltf.scene)
     // Animation
-    mixer1 = new THREE.AnimationMixer(gltf.scene)
-    const cloudMove1 = mixer1.clipAction(getAnimation(gltf, 'cloudAction1'))
-    const cloudMove2 = mixer1.clipAction(getAnimation(gltf, 'cloudAction2'))
-    const cloudMove3 = mixer1.clipAction(getAnimation(gltf, 'cloudAction3'))
+    cloudMixer = new THREE.AnimationMixer(gltf.scene)
+    const cloudMove1 = cloudMixer.clipAction(getAnimation(gltf, 'cloudAction1'))
+    const cloudMove2 = cloudMixer.clipAction(getAnimation(gltf, 'cloudAction2'))
+    const cloudMove3 = cloudMixer.clipAction(getAnimation(gltf, 'cloudAction3'))
 
     cloudMove1.play()
     cloudMove2.play()
@@ -330,7 +341,6 @@ gltfLoader.load('/models/clouds.glb', (gltf) => {
     cloudMove1.timeScale = 1 / 5 // add this
     cloudMove2.timeScale = 1 / 5 // add this
     cloudMove3.timeScale = 1 / 5 // add this
-    console.log(mixer)
 })
 
 gltfLoader.load('/models/OceanScene.glb', (gltf) => {
@@ -341,32 +351,84 @@ gltfLoader.load('/models/OceanScene.glb', (gltf) => {
     // updateAllMaterials()
 })
 
+let diverMixer = null
+gltfLoader.load('/models/diver.glb', (gltf) => {
+    gltf.scene.position.set(-3, -20, -20)
+    gltf.scene.rotation.set(6.5, 0.5, 0)
+    gltf.scene.scale.set(3, 3, 3)
+    scene.add(gltf.scene)
+
+    // Diver Animation
+    diverMixer = new THREE.AnimationMixer(gltf.scene)
+    const diverIdle = diverMixer.clipAction(getAnimation(gltf, 'Idle'))
+    diverIdle.play()
+    diverIdle.timeScale = 0.5
+
+    gui.add(gltf.scene.position, 'x').min(-50).max(50).step(0.001).name('diver position x')
+    gui.add(gltf.scene.position, 'y').min(-50).max(50).step(0.001).name('diver position y')
+    gui.add(gltf.scene.position, 'z').min(-50).max(50).step(0.001).name('diver position z')
+    gui.add(gltf.scene.rotation, 'x').min(-50).max(50).step(0.0001).name('diver rotation x')
+    gui.add(gltf.scene.rotation, 'y').min(-50).max(50).step(0.0001).name('diver rotation y')
+    gui.add(gltf.scene.rotation, 'z').min(-50).max(50).step(0.0001).name('diver rotation z')
+    // updateAllMaterials()
+})
+
 const tresureChestGroup = new THREE.Group()
 scene.add(tresureChestGroup)
-let testToggle = { test: false }
+
+let chestMixer = null
+
 gltfLoader.load('/models/tresureChest.glb', (gltf) => {
     gltf.scene.position.set(-3.5, -2, -25)
     gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
     tresureChestGroup.add(gltf.scene)
-    mixer = new THREE.AnimationMixer(gltf.scene)
-    const chestOpen = mixer.clipAction(getAnimation(gltf, 'chestOpen'))
+    chestMixer = new THREE.AnimationMixer(gltf.scene)
+    const chestOpen = chestMixer.clipAction(getAnimation(gltf, 'chestOpen'))
 
+    // Chest Animation *Trigger later
     chestOpen.play()
     chestOpen.timeScale = 2
 
     // updateAllMaterials()
 })
+
+let sharkMixer = null
+let fishMixer = null
 const fishGroup = new THREE.Group()
-scene.add(fishGroup)
+const sharkGroup = new THREE.Group()
+scene.add(fishGroup, sharkGroup)
 gltfLoader.load('/models/anglerFish.glb', (gltf) => {
     gltf.scene.position.set(-3.5, -2, -25)
     gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
     fishGroup.add(gltf.scene)
 })
+gltfLoader.load('/models/clownFish.glb', (gltf) => {
+    gltf.scene.position.set(-3.5, -2, -25)
+    gltf.scene.rotation.x = 0.2
+    gltf.scene.rotation.y = -1.801
+    fishGroup.add(gltf.scene)
+    fishMixer = new THREE.AnimationMixer(gltf.scene)
+    const fishMove1 = fishMixer.clipAction(getAnimation(gltf, 'clownFishSwimming'))
+    const fishMove2 = fishMixer.clipAction(getAnimation(gltf, 'Swim.002'))
+    const fishMove3 = fishMixer.clipAction(getAnimation(gltf, 'Swim.003'))
+    fishMove1.play()
+    fishMove2.play()
+    fishMove3.play()
+})
+gltfLoader.load('/models/shark.glb', (gltf) => {
+    gltf.scene.position.set(-3.5, -2, -25)
+    gltf.scene.rotation.x = 0.2
+    gltf.scene.rotation.y = -1.801
+    sharkGroup.add(gltf.scene)
+    sharkMixer = new THREE.AnimationMixer(gltf.scene)
+    const sharkMove = sharkMixer.clipAction(getAnimation(gltf, 'sharkSwim'))
+    sharkMove.play()
 
-gui.add(testToggle, 'test')
+    // gsap.to(gltf.scene.position, { duration: 10, x: 50 })
+})
+
 const boatGroup = new THREE.Group()
 scene.add(boatGroup)
 
@@ -436,10 +498,6 @@ scene.add(cameraGroup)
 const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height, 0.1, 100)
 camera.position.z = 8
 cameraGroup.add(camera)
-
-gui.add(camera.position, 'x').min(-50).max(50).step(0.001).name('camera posX')
-gui.add(camera.position, 'y').min(-50).max(50).step(0.001).name('camera posY')
-gui.add(camera.position, 'z').min(-50).max(50).step(0.001).name('camera posZ')
 /**
  * Renderer
  */
@@ -472,10 +530,10 @@ gui.add(renderer, 'toneMapping', {
 let scrollY = window.scrollY
 let currentSection = 0
 
-const waveSound = new Audio('/sounds/wavesSound.mp3')
 const submergeSound = new Audio('/sounds/submerge.mp3')
 const emergeSound = new Audio('/sounds/emerge.mp3')
 const bubbleSound = new Audio('/sounds/bubbles.mp3')
+const scrollUpBtn = document.querySelector('.scroll-up-btn')
 
 window.addEventListener('scroll', () => {
     scrollY = window.scrollY * 10
@@ -484,27 +542,22 @@ window.addEventListener('scroll', () => {
 
     if (newSection != currentSection) {
         currentSection = newSection
-
-        // gsap.to(sectionMeshes[currentSection].rotation, {
-        //     duration: 1.5,
-        //     ease: 'power2.inOut',
-        //     x: '+=6',
-        //     y: '+=3',
-        //     z: '+=1.5',
-        // })
         if (newSection === 1) {
-            submergeSound.volume = 0.1
+            scrollUpBtn.classList.remove('hidden')
+            submergeSound.volume = volumeParameters.submergeVolume
             submergeSound.currentTime = 0
             submergeSound.play()
 
-            waveSound.volume = 0.008
+            waveSound.volume = volumeParameters.newWaveVolume
         } else if (newSection === 0) {
-            emergeSound.volume = 0.4
+            scrollUpBtn.classList.add('hidden')
+            emergeSound.volume = volumeParameters.emergeVolume
             emergeSound.currentTime = 0
             emergeSound.play()
-            waveSound.volume = 0.08
+            waveSound.volume = volumeParameters.waveVolume
         } else if (newSection === 4) {
             bubbleSound.play()
+            bubbleSound.volume = volumeParameters.bubbleVolume
         }
     }
 })
@@ -596,12 +649,25 @@ const tick = () => {
     cameraGroup.position.y += (parallaxY - cameraGroup.position.y) * 5 * deltaTime
 
     // Model animation
-    if (mixer) {
-        mixer.update(deltaTime)
+    if (chestMixer) {
+        chestMixer.update(deltaTime)
     }
-    if (mixer1) {
-        mixer1.update(deltaTime)
+    if (cloudMixer) {
+        cloudMixer.update(deltaTime)
     }
+    if (diverMixer) {
+        diverMixer.update(deltaTime)
+    }
+    if (fishMixer) {
+        fishMixer.update(deltaTime)
+    }
+    if (sharkMixer) {
+        sharkMixer.update(deltaTime)
+    }
+
+    const fishAngle = elapsedTime * 0.5
+    fishGroup.position.x = Math.sin(fishAngle) * Math.cos(fishAngle)
+
     waterMaterial.uniforms.uTime.value = elapsedTime
 
     boatGroup.position.y = Math.sin(elapsedTime) * 0.08
