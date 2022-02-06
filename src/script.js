@@ -383,7 +383,7 @@ gltfLoader.load('/models/tresureChest.glb', (gltf) => {
     gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
     tresureChestGroup.add(gltf.scene)
-    chestMixer = new THREE.AnimationMixer(gltf.scene)
+    chestMixer = new THREE.AnimationMixer(tresureChestGroup)
     const chestOpen = chestMixer.clipAction(getAnimation(gltf, 'chestOpen'))
 
     // Chest Animation *Trigger later
