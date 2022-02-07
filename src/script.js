@@ -543,7 +543,6 @@ window.addEventListener('scroll', () => {
     if (newSection != currentSection) {
         currentSection = newSection
         if (newSection === 1) {
-            scrollUpBtn.classList.remove('hidden')
             submergeSound.volume = volumeParameters.submergeVolume
             submergeSound.currentTime = 0
             submergeSound.play()
@@ -559,6 +558,10 @@ window.addEventListener('scroll', () => {
             bubbleSound.play()
             bubbleSound.volume = volumeParameters.bubbleVolume
         }
+    }
+
+    if (currentSection != 0) {
+        scrollUpBtn.classList.remove('hidden')
     }
 })
 

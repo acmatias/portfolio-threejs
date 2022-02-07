@@ -115,7 +115,20 @@
 .nav-link:hover {
     color: #9e0e09;
 }
-/*  End of Navbar */
+/*  End of Navbar ------------------------------------------------*/
+
+/*  Section common ------------------------------------------------*/
+.section-heading {
+    font-size: 10rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    opacity: 0.8;
+    text-shadow: 2rem 2rem 4rem #aaa;
+}
+
+/* end of section common------------------------------------------------*/
 
 /*  Section 1 ------------------------------------------------*/
 
@@ -263,23 +276,15 @@
 /* Section 2 ------------------------------------------------*/
 .section-2 {
     width: 100%;
-    height: 100vh;
+    height: 60vh;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
     position: relative;
 }
-.section-heading {
-    font-size: 10rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: rgb(255, 255, 255);
-    text-align: center;
-    opacity: 0.9;
-    text-shadow: 2rem 2rem 4rem #aaa;
-}
-.blank-container {
+
+.about-container {
     width: 80%;
     height: 80%;
     display: flex;
@@ -287,58 +292,25 @@
     justify-content: center;
 }
 
-.about-img {
-    width: 50%;
-    opacity: 0;
+.about-blank {
+    width: 45%;
 }
 
 .about-text {
+    background-color: #056780;
     width: 550px;
     height: 100%;
     padding: 1rem;
     font-size: 2rem;
     letter-spacing: 0.1rem;
-    transform: rotateY(-20deg);
-    transition: all 0.5s;
 }
-
-/* .contact-form input,
-.contact-form textarea {
-    margin: 1rem;
-    padding: 1rem;
-    font-size: 1.3rem;
-    letter-spacing: 0.1rem;
-    border: none;
-    border-radius: 2rem;
-    box-shadow: inset 0.1rem 0.1rem 0.2rem #ddd, inset -0.1rem -0.1rem 0.2rem #ddd;
-} */
-
-/* .contact-form textarea {
-    max-height: 15rem;
-    min-height: 10rem;
-    max-width: 100%;
-    min-width: 70%;
-} */
-
-/* .contact-form input[type='submit'] {
-    background-color: rgba(50, 231, 255, 0.8);
-    color: #fff;
-    font-weight: bolder;
-    letter-spacing: 0.5rem;
-    cursor: pointer;
-    transition: background-color 0.5s;
-} */
-
-/* .contact-form input[type='submit']:hover {
-    background-color: #32e7ff;
-} */
 
 /* end of section 2 ------------------------------------------------*/
 
 /* Section 3-------------------------------------------------------- */
 .section-3 {
     width: 100%;
-    height: 100vh;
+    height: 70vh;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -351,14 +323,14 @@
 }
 .card-wrapper {
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 70%;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .card {
     cursor: pointer;
-    perspective: 800px;
+    perspective: 1000px;
+    margin: 30px 5rem;
 }
 
 .card-frame {
@@ -370,8 +342,8 @@
 }
 
 .card-content {
-    width: 400px;
-    height: 200px;
+    width: 500px;
+    height: 250px;
     background-color: rgb(149, 225, 238, 0.5);
     display: flex;
     justify-content: center;
@@ -422,19 +394,13 @@
     width: 50%;
     padding: 8% 5% 10% 5%;
 }
-
-.contact-form-wrapper {
-    /* background-color: #ffffff8f; */
-    border-radius: 0 10px 10px 0;
+.contact-links .section-heading {
+    font-size: 5rem;
 }
 
-h2 {
-    font-family: 'Arimo', sans-serif;
-    color: #fff;
-    font-size: clamp(30px, 6vw, 60px);
-    letter-spacing: 2px;
-    text-align: center;
-    transform: scale(0.95, 1);
+.contact-form-wrapper {
+    background-color: #056780;
+    border-radius: 0 20px 20px 0;
 }
 
 .links {
@@ -458,11 +424,11 @@ img {
 }
 
 img:hover {
-    transform: scale(1.1, 1.1);
+    transform: scale(1.5, 1.5);
 }
 
 img:active {
-    transform: scale(1.1, 1.1);
+    transform: scale(1.5, 1.5);
     filter: hue-rotate(220deg) drop-shadow(2px 4px 4px #222) sepia(0.3);
 }
 
@@ -535,36 +501,6 @@ textarea:valid + label {
 
 /* End of Section 4 */
 
-/* Footer */
-.footer {
-    width: 100%;
-    height: 12rem;
-    background-color: #202122;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 10rem;
-}
-
-.footer-nav a {
-    font-family: 'MADE Soulmaze', serif;
-    font-size: 2rem;
-    color: #ccc;
-    margin-right: 3rem;
-    letter-spacing: 0.1rem;
-    transition: color 0.3s;
-}
-
-.footer-nav a:hover {
-    color: #862323;
-}
-
-.copyright {
-    font-size: 2rem;
-    color: #ddd;
-}
-/* End of Footer */
-
 /* Responsive */
 
 @media (max-width: 1400px) {
@@ -580,22 +516,23 @@ textarea:valid + label {
         flex-wrap: wrap;
     }
 
+    .card-content {
+        width: 400px;
+        height: 200px;
+    }
     .card {
         margin: 5rem 10rem;
     }
 
     .section-3 {
-        flex-direction: column;
-    }
-
-    .section-3 {
         height: auto;
-        padding: 5rem 0 10rem 0;
+        padding: 3rem 0 10rem 0;
+        flex-direction: column;
     }
     .section-2,
     .section-4 {
         height: auto;
-        padding: 5rem 0;
+        padding: 3rem 0;
     }
 }
 
@@ -631,14 +568,6 @@ textarea:valid + label {
     h2 {
         font-size: clamp(40px, 10vw, 60px);
     }
-
-    .footer {
-        padding: 0 5rem;
-    }
-
-    .footer-nav a {
-        font-size: 1.8rem;
-    }
 }
 
 @media (max-width: 700px) {
@@ -648,27 +577,16 @@ textarea:valid + label {
     .banner-heading {
         height: 10rem;
     }
-    .section-2 {
-        height: 100vh;
-    }
+
     .section-heading {
         font-size: 6rem;
     }
     .about-text {
-        font-size: 1.5rem;
+        font-size: 2rem;
     }
 
     .contact-details div {
         margin: 3rem 2rem;
-    }
-
-    .footer {
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .footer-nav {
-        margin-bottom: 2rem;
     }
 }
 
@@ -683,6 +601,15 @@ textarea:valid + label {
 
     .banner-heading span {
         font-size: 34px;
+    }
+
+    .card-content {
+        width: 300px;
+        height: 150px;
+    }
+
+    .contact-links .section-heading {
+        font-size: 4rem;
     }
 
     h2 {
