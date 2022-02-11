@@ -7,6 +7,8 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 import waterVertexShader from './shaders/water/vertex.glsl'
 import waterFragmentShader from './shaders/water/fragment.glsl'
+import flagVertexShader from './shaders/flag/vertex.glsl'
+import flagFragmentShader from './shaders/flag/fragment.glsl'
 import { getGPUTier } from 'detect-gpu'
 ;(async () => {
     const gpuTier = await getGPUTier()
@@ -211,6 +213,7 @@ gltfLoader.setDRACOLoader(dracoLoader)
 
 // const gltfLoader = new GLTFLoader(loadingManager)
 const textureLoader = new THREE.TextureLoader(loadingManager)
+const flagTexture = textureLoader.load('/textures/ph-flag.jpg')
 
 /**
  * Objects
@@ -310,12 +313,6 @@ gui.add(water.position, 'z').min(-50).max(50).step(0.001).name('waterPos Z')
 gui.add(water.rotation, 'x').min(-10).max(10).step(0.001).name('waterRot x')
 gui.add(water.rotation, 'y').min(-10).max(10).step(0.001).name('waterRot y')
 gui.add(water.rotation, 'z').min(-10).max(10).step(0.001).name('waterRot z')
-
-// Material
-const material = new THREE.MeshToonMaterial({
-    color: parameters.materialColor,
-    gradientMap: gradientTexture,
-})
 
 // Meshes
 const objectDistance = 2
@@ -432,14 +429,47 @@ gltfLoader.load('/models/shark.glb', (gltf) => {
 const boatGroup = new THREE.Group()
 scene.add(boatGroup)
 
+const flagGeometry = new THREE.PlaneGeometry(1, 1, 32, 32)
+
+const flagCount = flagGeometry.attributes.position.count
+const flagRandoms = new Float32Array(flagCount)
+
+for (let i = 0; i < flagCount; i++) {
+    flagRandoms[i] = Math.random()
+}
+
+flagGeometry.setAttribute('aRandom', new THREE.BufferAttribute(flagRandoms, 1))
+
+const flagMaterial = new THREE.ShaderMaterial({
+    vertexShader: flagVertexShader,
+    fragmentShader: flagFragmentShader,
+    uniforms: {
+        uFrequency: { value: new THREE.Vector2(10, 5) },
+        uTime: { value: 0 },
+        uColor: { value: new THREE.Color('cyan') },
+        uTexture: { value: flagTexture },
+    },
+    side: THREE.DoubleSide,
+})
+
+gui.add(flagMaterial.uniforms.uFrequency.value, 'x').min(0).max(20).step(0.01).name('frequencyX')
+gui.add(flagMaterial.uniforms.uFrequency.value, 'y').min(0).max(20).step(0.01).name('frequencyY')
+
+const flagMesh = new THREE.Mesh(flagGeometry, flagMaterial)
+flagMesh.scale.y = 2 / 3
+flagMesh.position.set(-0.02, 3.68, -21)
+// boatGroup.add(flagMesh)
+
 gltfLoader.load('/models/boat.glb', (gltf) => {
-    // gltf.scene.scale.set(0.3, 0.3, 0.3)
     gltf.scene.position.set(-3.5, -2, -25)
     gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
     boatGroup.add(gltf.scene)
     gui.add(gltf.scene.rotation, 'y').min(-Math.PI).max(Math.PI).step(0.001).name('boatRotationY')
-    // updateAllMaterials()
+    const flag = scene.getObjectByName('flag')
+    // flagGeometry.setAttribute('aRandom', new THREE.BufferAttribute(flagRandoms, 1))
+    flag.material = flagMaterial
+    flag.geometry.setAttribute('aRandom', new THREE.BufferAttribute(flagRandoms, 1))
 })
 gui.add(boatGroup.position, 'y').min(-150).max(150).step(0.001).name('y')
 
@@ -613,6 +643,19 @@ function getAnimation(gltf, name) {
     }
     return result
 }
+// function getMesh(gltf, name) {
+//     let result
+//     gltf.animations.forEach((animation) => {
+//         if (animation.name === name) {
+//             result = animation
+//             return
+//         }
+//     })
+//     if (result == null) {
+//         console.error('animation: ' + name + ' cannot be found!')
+//     }
+//     return result
+// }
 
 /**
  * Animate
@@ -626,6 +669,9 @@ const tick = () => {
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
+
+    // Flag animation
+    flagMaterial.uniforms.uTime.value = elapsedTime
 
     // Cast a ray
     raycaster.setFromCamera(cursor, camera)

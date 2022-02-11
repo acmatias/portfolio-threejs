@@ -6,13 +6,12 @@
     font-size: 2rem;
     letter-spacing: 0.2rem;
     color: rgb(255, 255, 255);
-    /* margin-top: 5rem; */
 }
 
 .scroll-up-btn {
     width: 5rem;
     height: 5rem;
-    background-color: rgba(50, 231, 255, 0.8);
+    background-color: rgba(50, 231, 255, 0.7);
     position: fixed;
     bottom: 5rem;
     right: 5rem;
