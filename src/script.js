@@ -12,7 +12,7 @@ import flagFragmentShader from './shaders/flag/fragment.glsl'
 import { getGPUTier } from 'detect-gpu'
 ;(async () => {
     const gpuTier = await getGPUTier()
-    // console.log(gpuTier)
+    console.log(gpuTier)
 })()
 import Stats from 'stats.js'
 
@@ -28,55 +28,6 @@ menu.addEventListener('click', () => {
     navbar.classList.toggle('change')
     menu.classList.toggle('change')
 })
-// End of Navbar
-
-// Section 2 Video
-// const video = document.querySelector('.video')
-// const btn = document.querySelector('.buttons button i')
-// const bar = document.querySelector('.video-bar')
-
-// const playPause = () => {
-//     if (video.paused) {
-//         video.play()
-//         btn.className = 'far fa-pause-circle'
-//         video.style.opacity = '.7'
-//     } else {
-//         video.pause()
-//         btn.className = 'far fa-play-circle'
-//         video.style.opacity = '.3'
-//     }
-// }
-
-// btn.addEventListener('click', () => {
-//     playPause()
-// })
-
-// video.addEventListener('timeupdate', () => {
-//     console.log(video.currentTime, video.duration)
-//     const barWidth = video.currentTime / video.duration
-//     bar.style.width = `${barWidth * 100}%`
-//     if (video.ended) {
-//         btn.className = 'far fa-play-circle'
-//         video.style.opacity = '.3'
-//     }
-// })
-// End of Section 2 Video
-
-// var swiper = new Swiper('.swiper-container', {
-//     effect: 'coverflow',
-//     grabCursor: true,
-//     centeredSlides: true,
-//     slidesPerView: 'auto',
-//     coverflowEffect: {
-//         rotate: 70,
-//         stretch: 0,
-//         depth: 100,
-//         modifier: 1,
-//         slideShadows: true,
-//     },
-// })
-
-// --------------------------------------------------------------------------------------
 
 /**
  * Loaders
@@ -471,6 +422,20 @@ gltfLoader.load('/models/boat.glb', (gltf) => {
     flag.material = flagMaterial
     flag.geometry.setAttribute('aRandom', new THREE.BufferAttribute(flagRandoms, 1))
 })
+
+let fisherMixer = null
+gltfLoader.load('/models/fisher.glb', (gltf) => {
+    gltf.scene.position.set(-3.5, -2, -25)
+    gltf.scene.rotation.x = 0.2
+    gltf.scene.rotation.y = -1.801
+    boatGroup.add(gltf.scene)
+
+    fisherMixer = new THREE.AnimationMixer(gltf.scene)
+    const fisherMove = fisherMixer.clipAction(getAnimation(gltf, 'fishingAnimation'))
+    const fisherRodMove = fisherMixer.clipAction(getAnimation(gltf, 'fishingRodAction'))
+    fisherMove.play()
+    fisherRodMove.play()
+})
 gui.add(boatGroup.position, 'y').min(-150).max(150).step(0.001).name('y')
 
 /**
@@ -709,6 +674,9 @@ const tick = () => {
     }
     if (fishMixer) {
         fishMixer.update(deltaTime)
+    }
+    if (fisherMixer) {
+        fisherMixer.update(deltaTime)
     }
     if (sharkMixer) {
         sharkMixer.update(deltaTime)
