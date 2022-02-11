@@ -231,7 +231,7 @@
 }
 
 .banner-btn {
-    top: 400px;
+    top: 450px;
     width: 30rem;
     height: 6rem;
     margin-right: 10px;
@@ -665,6 +665,9 @@ textarea:valid + label {
         font-size: 34px;
     }
 
+    .about-text {
+        font-size: 1.5rem;
+    }
     .about-btn {
         width: 20rem;
         height: 5rem;

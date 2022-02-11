@@ -31,3 +31,9 @@
 .scroll-up-btn:hover {
     background-color: #32e7ff;
 }
+
+@media (max-width: 500px) {
+    .copyright {
+        font-size: 1.5rem;
+    }
+}
