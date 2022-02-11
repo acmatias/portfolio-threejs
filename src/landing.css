@@ -112,6 +112,14 @@
     transition: color 0.4s;
 }
 
+.nav-p {
+    font-family: 'MADE Soulmaze', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.3rem;
+    color: rgb(41, 228, 203);
+    margin: 2rem 2rem;
+}
+
 .nav-link:hover {
     color: #9e0e09;
 }
