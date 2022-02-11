@@ -34,10 +34,6 @@ html {
     outline: none;
 }
 
-/* section:nth-child(odd) {
-    justify-content: flex-end;
-} */
-
 .loading-bar {
     position: absolute;
     top: 50%;
