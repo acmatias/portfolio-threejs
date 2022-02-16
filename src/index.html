@@ -127,17 +127,17 @@
                         </div>
                     </div>
                     <div class="contact-form-wrapper">
-                        <form>
+                        <form action="/sendmail" method="POST">
                             <div class="form-item">
-                                <input type="text" name="sender" required />
+                                <input type="text" name="subject" required />
                                 <label>Name:</label>
                             </div>
                             <div class="form-item">
-                                <input type="text" name="email" required />
+                                <input type="email" name="to" required />
                                 <label>Email:</label>
                             </div>
                             <div class="form-item">
-                                <textarea class="" name="message" required></textarea>
+                                <textarea class="" name="text" required></textarea>
                                 <label>Message:</label>
                             </div>
                             <button class="submit-btn">Send</button>

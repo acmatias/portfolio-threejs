@@ -509,6 +509,7 @@ input,
 textarea {
     width: 100%;
     outline: 0;
+    color: #ffffff;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 20px;
