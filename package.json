@@ -3,9 +3,7 @@
     "license": "UNLICENSED",
     "scripts": {
         "build": "webpack --config ./bundler/webpack.prod.js",
-        "dev": "npm-run-all --parallel watch:server watch:build",
-        "watch:build": "webpack serve --config ./bundler/webpack.dev.js",
-        "watch:server": "nodemon server.js"
+        "dev": "webpack serve --config ./bundler/webpack.dev.js"
     },
     "dependencies": {
         "@babel/core": "^7.16.7",
