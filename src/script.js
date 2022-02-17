@@ -32,14 +32,23 @@ menu.addEventListener('click', () => {
 /**
  * Loaders
  */
+// let volumeParameters = {
+//     volume: false,
+//     waveVolume: 0.08,
+//     bellVolume: 0.7,
+//     submergeVolume: 0.1,
+//     emergeVolume: 0.4,
+//     newWaveVolume: 0.008,
+//     bubbleVolume: 1,
+// }
 let volumeParameters = {
     volume: false,
-    waveVolume: 0.08,
-    bellVolume: 0.7,
-    submergeVolume: 0.1,
-    emergeVolume: 0.4,
-    newWaveVolume: 0.008,
-    bubbleVolume: 1,
+    waveVolume: 0,
+    bellVolume: 0,
+    submergeVolume: 0,
+    emergeVolume: 0,
+    newWaveVolume: 0,
+    bubbleVolume: 0,
 }
 const loadingBarElement = document.querySelector('.loading-bar')
 const scrollElement = document.querySelector('.stop-scrolling')
