@@ -35,7 +35,8 @@
         "webpack-merge": "^5.8.0"
     },
     "devDependencies": {
-        "nodemon": "^2.0.15"
+        "nodemon": "^2.0.15",
+        "nodemon-webpack-plugin": "^4.7.1"
     },
     "engines": {
         "node": "16.13.1"

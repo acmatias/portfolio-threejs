@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap);
 @import url(https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap);
 /* Navbar */
 .navbar {
     width: 100%;
@@ -31,10 +32,10 @@
     position: absolute;
     top: 1.5rem;
     left: 4rem;
+    font-family: 'Baloo Da 2', cursive;
 }
 
 .navbar-logo a {
-    font-family: 'MADE Soulmaze', sans-serif;
     font-size: 2.5rem;
     color: #eee;
     letter-spacing: 0.1rem;
@@ -44,7 +45,6 @@
     font-size: 3.5rem;
     font-weight: bold;
     color: rgb(149, 225, 238);
-    font-family: 'MADE Soulmaze';
 }
 
 .menu {
@@ -114,14 +114,6 @@
     transition: color 0.4s;
 }
 
-.nav-p {
-    font-family: 'MADE Soulmaze', sans-serif;
-    font-size: 2rem;
-    letter-spacing: 0.3rem;
-    color: rgb(41, 228, 203);
-    margin: 2rem 2rem;
-}
-
 .nav-link:hover {
     color: #9e0e09;
 }
@@ -136,6 +128,7 @@
     text-align: center;
     opacity: 0.8;
     text-shadow: 2rem 2rem 4rem #aaa;
+    font-family: 'Baloo Da 2', cursive;
 }
 
 /* end of section common------------------------------------------------*/
@@ -163,6 +156,7 @@
     margin-bottom: 4rem;
     perspective: 50rem;
     overflow: hidden;
+    font-family: 'Baloo Da 2', cursive;
 }
 
 .banner-heading span {
@@ -259,6 +253,7 @@
     position: relative;
     overflow: hidden;
     animation: fadeAnimation 1s 2s forwards;
+    font-family: 'Baloo Da 2', cursive;
 }
 
 .banner-btn.two {
@@ -317,6 +312,7 @@
     font-weight: 100px;
     color: rgb(255, 255, 255);
     border-radius: 5px;
+    font-family: 'Baloo Da 2', cursive;
 }
 
 .about-btn {
@@ -338,6 +334,7 @@
     position: relative;
     overflow: hidden;
     animation: fadeAnimation 1s 2s forwards;
+    font-family: 'Baloo Da 2', cursive;
 }
 
 .about-btn::before {
@@ -486,71 +483,83 @@ img:active {
     filter: hue-rotate(220deg) drop-shadow(2px 4px 4px #222) sepia(0.3);
 }
 
-.form-item {
-    position: relative;
+.contact-container {
+    -webkit-transform: rotate(5deg);
+    transform: rotate(5deg);
+    margin: 0;
 }
 
-label,
-input,
-textarea {
-    font-family: 'Poppins', sans-serif;
-    background-color: rgba(0, 0, 0, 0.01);
+.contact-name {
+    color: #111;
+    font-size: 80px;
+    text-shadow: 1px 1px 1px #222222;
 }
 
-label {
+.contact-header {
+    color: #111;
+    font-size: 30px;
+    text-shadow: 1px 1px 1px #222222;
+}
+
+.contact-container,
+.contact-front,
+.contact-back {
     position: absolute;
-    top: 10px;
-    left: 2%;
-    color: rgba(255, 255, 255, 0.712);
-    font-size: clamp(14px, 1.5vw, 18px);
-    pointer-events: none;
-    user-select: none;
+    right: 20%;
+    border-radius: 5px;
+    -webkit-transition: all 0.8s;
+    transition: all 0.8s;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+div:hover .contact-front {
+    z-index: 0;
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+div:hover .contact-back {
+    -webkit-transform: rotateY(0);
+    transform: rotateY(0);
 }
 
-input,
-textarea {
-    width: 100%;
-    outline: 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    padding: 12px;
-    font-size: clamp(15px, 1.5vw, 18px);
+.contact-front {
+    z-index: 1;
+    color: #333;
+    width: 500px;
+    height: 300px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
+    padding: 40px 20px;
+    text-align: center;
+    line-height: 1em;
+    font-size: 4rem;
+    font-family: 'Reenie Beanie', cursive;
+    background-color: rgba(149, 225, 238, 0.6);
 }
 
-input:focus + label,
-input:valid + label,
-textarea:focus + label,
-textarea:valid + label {
-    font-size: clamp(13px, 1.3vw, 16px);
-    color: rgb(149, 225, 238);
-    top: -20px;
-    transition: all 0.225s ease;
+.contact-back {
+    color: #333;
+    width: 500px;
+    height: 300px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.8);
+    padding: 40px 20px;
+    text-align: left;
+    line-height: 1em;
+    font-size: 4rem;
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+    font-family: 'Baloo Da 2', cursive;
+    background-color: rgba(149, 225, 238, 0.9);
 }
 
-.submit-btn {
-    background-color: rgba(50, 231, 255, 1);
-    filter: drop-shadow(2px 2px 3px #0003);
-    color: #fff;
-    font-family: 'Poppins', sans-serif;
-    font-size: clamp(16px, 1.6vw, 18px);
-    display: block;
-    padding: 12px 20px;
-    margin: 2px auto;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    user-select: none;
-    transition: 0.2s;
+.contact-title {
+    font-size: 2.5rem;
+    line-height: 1.5em;
 }
 
-.submit-btn:hover {
-    transform: scale(1.1, 1.1);
-}
-
-.submit-btn:active {
-    transform: scale(1.1, 1.1);
-    filter: sepia(0.5);
+.contact-info {
+    font-size: 2rem;
+    line-height: 1em;
+    margin-top: 10px;
 }
 
 /* End of Section 4 */
@@ -774,7 +783,7 @@ textarea:valid + label {
     outline: none;
     text-decoration: none;
     list-style-type: none;
-    font-family: 'Baloo Da 2', cursive;
+    /* font-family: 'Baloo Da 2', cursive; */
 }
 
 html {

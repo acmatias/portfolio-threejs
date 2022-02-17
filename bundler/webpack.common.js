@@ -2,8 +2,18 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
+// const NodemonPlugin = require('nodemon-webpack-plugin') // Ding
 
 module.exports = {
+    // entry: './src/server.js',
+    // output: {
+    //     path: path.resolve('./dist'),
+    //     filename: 'server.js',
+    // },
+    // plugins: [
+    //     new NodemonPlugin(), // Dong
+    // ],
+
     entry: path.resolve(__dirname, '../src/script.js'),
     output: {
         hashFunction: 'xxhash64',
