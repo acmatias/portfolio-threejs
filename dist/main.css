@@ -392,7 +392,7 @@
 .card-content {
     width: 500px;
     height: 250px;
-    background-color: rgb(149, 225, 238, 0.5);
+    opacity: 0.6;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -406,7 +406,7 @@
 }
 
 .card:hover .card-content {
-    background-color: rgba(149, 225, 238, 0.9);
+    opacity: 0.9;
     transform: rotateY(0) rotateX(0);
     border-radius: 0;
 }
@@ -506,12 +506,12 @@ img:active {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
-div:hover .contact-front {
+.contact-container:hover .contact-front {
     z-index: 0;
     -webkit-transform: rotateY(180deg);
     transform: rotateY(180deg);
 }
-div:hover .contact-back {
+.contact-container:hover .contact-back {
     -webkit-transform: rotateY(0);
     transform: rotateY(0);
 }
