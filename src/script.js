@@ -3,7 +3,6 @@ import * as THREE from 'three'
 import * as dat from 'lil-gui'
 import gsap from 'gsap'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 import waterVertexShader from './shaders/water/vertex.glsl'
 import waterFragmentShader from './shaders/water/fragment.glsl'
@@ -583,13 +582,6 @@ window.addEventListener('mousemove', (event) => {
 
 window.addEventListener('click', () => {
     if (currentIntersect) {
-        // if (currentIntersect.object === object1) {
-        //     console.log('click on object 1');
-        // } else if (currentIntersect.object === object2) {
-        //     console.log('click on object 2');
-        // } else if (currentIntersect.object === object3) {
-        //     console.log('click on object 3');
-        // }
         switch (currentIntersect.object) {
             case tresureChestGroup:
                 console.log('click on object 1')
@@ -617,19 +609,6 @@ function getAnimation(gltf, name) {
     }
     return result
 }
-// function getMesh(gltf, name) {
-//     let result
-//     gltf.animations.forEach((animation) => {
-//         if (animation.name === name) {
-//             result = animation
-//             return
-//         }
-//     })
-//     if (result == null) {
-//         console.error('animation: ' + name + ' cannot be found!')
-//     }
-//     return result
-// }
 
 /**
  * Animate
