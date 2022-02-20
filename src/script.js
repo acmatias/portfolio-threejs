@@ -179,11 +179,19 @@ const flagTexture = textureLoader.load('/textures/ph-flag.jpg')
  */
 
 // Texture
+
 const gradientTexture = textureLoader.load('textures/gradients/3.jpg')
 gradientTexture.magFilter = THREE.NearestFilter
 
 const auroraTexture = textureLoader.load('/textures/maps/aurora.jpg')
 scene.background = auroraTexture
+
+// Fog
+const fog = new THREE.Fog('#262837', 55, 128)
+scene.fog = fog
+
+gui.add(fog, 'near').min(0).max(100).step(1).name('fog near')
+gui.add(fog, 'far').min(0).max(1000).step(1).name('fog far')
 
 // Water
 const waterGeometry = new THREE.PlaneGeometry(4, 4, 512, 512)
@@ -285,18 +293,18 @@ gltfLoader.load('/models/clouds.glb', (gltf) => {
     gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
     cloudGroup.add(gltf.scene)
-    // Animation
-    cloudMixer = new THREE.AnimationMixer(gltf.scene)
-    const cloudMove1 = cloudMixer.clipAction(getAnimation(gltf, 'cloudAction1'))
-    const cloudMove2 = cloudMixer.clipAction(getAnimation(gltf, 'cloudAction2'))
-    const cloudMove3 = cloudMixer.clipAction(getAnimation(gltf, 'cloudAction3'))
+    // // Animation
+    // cloudMixer = new THREE.AnimationMixer(gltf.scene)
+    // const cloudMove1 = cloudMixer.clipAction(getAnimation(gltf, 'cloudAction1'))
+    // const cloudMove2 = cloudMixer.clipAction(getAnimation(gltf, 'cloudAction2'))
+    // const cloudMove3 = cloudMixer.clipAction(getAnimation(gltf, 'cloudAction3'))
 
-    cloudMove1.play()
-    cloudMove2.play()
-    cloudMove3.play()
-    cloudMove1.timeScale = 1 / 5 // add this
-    cloudMove2.timeScale = 1 / 5 // add this
-    cloudMove3.timeScale = 1 / 5 // add this
+    // cloudMove1.play()
+    // cloudMove2.play()
+    // cloudMove3.play()
+    // cloudMove1.timeScale = 1 / 5 // add this
+    // cloudMove2.timeScale = 1 / 5 // add this
+    // cloudMove3.timeScale = 1 / 5 // add this
 })
 
 gltfLoader.load('/models/OceanScene.glb', (gltf) => {
@@ -651,12 +659,10 @@ const tick = () => {
     cameraGroup.position.y += (parallaxY - cameraGroup.position.y) * 5 * deltaTime
 
     // Model animation
-    if (chestMixer) {
-        chestMixer.update(deltaTime)
-    }
-    if (cloudMixer) {
-        cloudMixer.update(deltaTime)
-    }
+
+    // if (cloudMixer) {
+    //     cloudMixer.update(deltaTime)
+    // }
     if (diverMixer) {
         diverMixer.update(deltaTime)
     }
@@ -670,6 +676,9 @@ const tick = () => {
         sharkMixer.update(deltaTime)
     }
 
+    if (chestMixer) {
+        chestMixer.update(deltaTime)
+    }
     const fishAngle = elapsedTime * 0.5
     fishGroup.position.x = Math.sin(fishAngle) * Math.cos(fishAngle)
 
