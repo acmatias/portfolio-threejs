@@ -284,29 +284,6 @@ gui.add(water.rotation, 'z').min(-10).max(10).step(0.001).name('waterRot z')
 // Meshes
 const objectDistance = 2
 
-const cloudGroup = new THREE.Group()
-scene.add(cloudGroup)
-
-let cloudMixer = null
-gltfLoader.load('/models/clouds.glb', (gltf) => {
-    gltf.scene.position.set(-3.5, -2, -25)
-    gltf.scene.rotation.x = 0.2
-    gltf.scene.rotation.y = -1.801
-    cloudGroup.add(gltf.scene)
-    // // Animation
-    // cloudMixer = new THREE.AnimationMixer(gltf.scene)
-    // const cloudMove1 = cloudMixer.clipAction(getAnimation(gltf, 'cloudAction1'))
-    // const cloudMove2 = cloudMixer.clipAction(getAnimation(gltf, 'cloudAction2'))
-    // const cloudMove3 = cloudMixer.clipAction(getAnimation(gltf, 'cloudAction3'))
-
-    // cloudMove1.play()
-    // cloudMove2.play()
-    // cloudMove3.play()
-    // cloudMove1.timeScale = 1 / 5 // add this
-    // cloudMove2.timeScale = 1 / 5 // add this
-    // cloudMove3.timeScale = 1 / 5 // add this
-})
-
 gltfLoader.load('/models/OceanScene.glb', (gltf) => {
     gltf.scene.position.set(-3.5, -2, -25)
     gltf.scene.rotation.x = 0.2
