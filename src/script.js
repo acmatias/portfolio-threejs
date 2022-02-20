@@ -183,8 +183,8 @@ const flagTexture = textureLoader.load('/textures/ph-flag.jpg')
 const gradientTexture = textureLoader.load('textures/gradients/3.jpg')
 gradientTexture.magFilter = THREE.NearestFilter
 
-const auroraTexture = textureLoader.load('/textures/maps/aurora.jpg')
-scene.background = auroraTexture
+// const auroraTexture = textureLoader.load('/textures/maps/aurora.jpg')
+// scene.background = auroraTexture
 
 // Fog
 const fog = new THREE.Fog('#262837', 55, 128)
@@ -347,6 +347,7 @@ gltfLoader.load('/models/tresureChest.glb', (gltf) => {
     gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
     tresureChestGroup.add(gltf.scene)
+
     chestMixer = new THREE.AnimationMixer(tresureChestGroup)
     const chestOpen = chestMixer.clipAction(getAnimation(gltf, 'chestOpen'))
 
@@ -448,7 +449,7 @@ gltfLoader.load('/models/fisher.glb', (gltf) => {
 
     fisherMixer = new THREE.AnimationMixer(gltf.scene)
     const fisherMove = fisherMixer.clipAction(getAnimation(gltf, 'fishingAnimation'))
-    const fisherRodMove = fisherMixer.clipAction(getAnimation(gltf, 'fishingRodAction'))
+    const fisherRodMove = fisherMixer.clipAction(getAnimation(gltf, 'fishingRodAnimation'))
     fisherMove.play()
     fisherRodMove.play()
 })
