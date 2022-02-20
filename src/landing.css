@@ -103,7 +103,7 @@
 }
 
 .nav-link {
-    font-family: 'MADE Soulmaze', sans-serif;
+    font-family: 'Baloo Da 2', cursive;
     font-size: 4rem;
     letter-spacing: 0.3rem;
     color: #fff;
@@ -360,12 +360,7 @@
     flex-direction: column;
     justify-content: space-around;
 }
-.card-container {
-    flex-wrap: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 50%;
-}
+
 .card-wrapper {
     display: flex;
     justify-content: center;
@@ -439,8 +434,8 @@
 
 .contact-links {
     display: flex;
-    justify-content: space-between;
-    align-self: center;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .me {
@@ -484,6 +479,10 @@
     color: rgba(255, 255, 255, 0.836);
     font-size: 2rem;
 }
+.contact-detail:hover i {
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+}
 
 .contact-img {
     width: 45px;
@@ -494,7 +493,7 @@
 
 i {
     font-size: 3rem;
-    color: #07cde7;
+    color: #c45d5d;
 }
 
 .card-heading {
@@ -506,6 +505,42 @@ i {
 .card-heading span {
     background-color: #333;
     color: #fff;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(1px, 1px) rotate(0deg);
+    }
+    10% {
+        transform: translate(-1px, -2px) rotate(-1deg);
+    }
+    20% {
+        transform: translate(-3px, 0px) rotate(1deg);
+    }
+    30% {
+        transform: translate(3px, 2px) rotate(0deg);
+    }
+    40% {
+        transform: translate(1px, -1px) rotate(1deg);
+    }
+    50% {
+        transform: translate(-1px, 2px) rotate(-1deg);
+    }
+    60% {
+        transform: translate(-3px, 1px) rotate(0deg);
+    }
+    70% {
+        transform: translate(3px, 1px) rotate(-1deg);
+    }
+    80% {
+        transform: translate(-1px, -1px) rotate(1deg);
+    }
+    90% {
+        transform: translate(1px, 2px) rotate(0deg);
+    }
+    100% {
+        transform: translate(1px, -2px) rotate(-1deg);
+    }
 }
 
 /* End of Section 4 */
@@ -547,6 +582,12 @@ i {
     }
 }
 
+@media (max-width: 1000px) {
+    .contact-detail h2 {
+        font-size: 2rem;
+    }
+}
+
 @media (max-width: 900px) {
     html {
         font-size: 40%;
@@ -570,9 +611,6 @@ i {
     .contact-form-wrapper {
         border-radius: 0 0 10px 10px;
     }
-    h2 {
-        font-size: clamp(40px, 10vw, 60px);
-    }
 }
 
 @media (max-width: 700px) {
@@ -595,6 +633,9 @@ i {
     }
     .about-text {
         font-size: 2rem;
+    }
+    .link {
+        margin: 20px 20px 20px 20px;
     }
 }
 
@@ -630,6 +671,9 @@ i {
     .card-content {
         width: 300px;
         height: 150px;
+    }
+    .contact-detail {
+        font-size: 0.1rem;
     }
 }
 /* Responsive  height*/
