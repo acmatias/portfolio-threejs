@@ -24,6 +24,10 @@
     transition: background-color 0.5s;
 }
 
+.scroll-up-btn i {
+    color: #fff;
+}
+
 .scroll-up-btn.hidden {
     display: none;
 }
