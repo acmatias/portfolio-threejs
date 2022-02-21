@@ -489,6 +489,34 @@
     opacity: 0.9;
 }
 
+.social-icons i {
+    color: #fff;
+    margin-left: 15px;
+    margin-bottom: 10px;
+    font-size: 4rem;
+    transition: 0.2s;
+}
+
+.fa-facebook-square:hover {
+    transform: scale(1.5, 1.5);
+    color: #3b5998;
+}
+
+.fa-linkedin:hover {
+    transform: scale(1.5, 1.5);
+    color: #0072b1;
+}
+
+.fa-instagram:hover {
+    transform: scale(1.5, 1.5);
+    color: #c32aa3;
+}
+
+.fa-github:hover {
+    transform: scale(1.5, 1.5);
+    color: #171515;
+}
+
 .contact-location {
     font-family: 'Cantarell', sans-serif;
     justify-content: space-between;
