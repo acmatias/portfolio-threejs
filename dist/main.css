@@ -1,5 +1,36 @@
 @import url(https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;500;600;700;800&family=Oswald:wght@200;300;400;500;600;700&display=swap);
 @import url(https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap);
+.stop-scrolling {
+    height: 100%;
+    overflow: hidden;
+}
+
+.loading-bar {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 2px;
+    background: #ffffff;
+    transform: scaleX(0);
+    transform-origin: revert;
+    transition: transform 3s;
+    will-change: transform;
+}
+
+.loading-bar.ended {
+    transform-origin: center;
+    transition: transform 3s ease-in-out;
+}
+
+.start-screen {
+    background: #ffffff;
+}
+
+.start-screen.ended {
+    transform-origin: top right;
+    transition: transform 1.5s ease-in-out;
+}
+
 /* Navbar */
 .navbar {
     width: 100%;
@@ -256,7 +287,7 @@
 }
 
 .banner-btn.two {
-    background: linear-gradient(to right, #07cde7, #7db2c2);
+    background: linear-gradient(to right, rgb(7, 205, 231), rgb(4, 169, 219));
     border: 0.1rem solid #056780;
 }
 
@@ -431,7 +462,7 @@
 .section-subheading {
     font-family: 'Cantarell', sans-serif;
     font-size: 3.5rem;
-    color: rgba(255, 255, 255, 0.836);
+    color: rgba(228, 40, 40, 0.836);
 }
 
 .contact-links {
@@ -463,7 +494,7 @@
     justify-content: space-between;
     align-self: center;
     text-align: center;
-    color: rgba(255, 255, 255, 0.836);
+    color: rgba(228, 40, 40, 0.9);
     font-size: 2rem;
 }
 
@@ -480,7 +511,7 @@
 }
 
 .contact-detail {
-    color: rgba(255, 255, 255, 0.836);
+    color: rgba(228, 40, 40, 0.9);
     font-size: 2rem;
 }
 .contact-detail:hover i {
@@ -497,7 +528,7 @@
 
 i {
     font-size: 3rem;
-    color: #c45d5d;
+    color: rgb(7, 205, 231);
 }
 
 .card-heading {
@@ -766,12 +797,6 @@ html {
     background: #1e1a20;
     font-size: 62.5%;
     scroll-behavior: smooth;
-    /* overflow: hidden; */
-}
-
-.stop-scrolling {
-    height: 100%;
-    overflow: hidden;
 }
 
 .webgl {
@@ -779,23 +804,6 @@ html {
     top: 0;
     left: 0;
     outline: none;
-}
-
-.loading-bar {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    height: 2px;
-    background: #ffffff;
-    transform: scaleX(0);
-    transform-origin: top left;
-    transition: transform 0.5s;
-    will-change: transform;
-}
-
-.loading-bar.ended {
-    transform-origin: top right;
-    transition: transform 1.5s ease-in-out;
 }
 
 

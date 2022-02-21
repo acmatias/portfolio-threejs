@@ -254,7 +254,7 @@
 }
 
 .banner-btn.two {
-    background: linear-gradient(to right, #07cde7, #7db2c2);
+    background: linear-gradient(to right, rgb(7, 205, 231), rgb(4, 169, 219));
     border: 0.1rem solid #056780;
 }
 
@@ -429,7 +429,7 @@
 .section-subheading {
     font-family: 'Cantarell', sans-serif;
     font-size: 3.5rem;
-    color: rgba(255, 255, 255, 0.836);
+    color: rgba(228, 40, 40, 0.836);
 }
 
 .contact-links {
@@ -461,7 +461,7 @@
     justify-content: space-between;
     align-self: center;
     text-align: center;
-    color: rgba(255, 255, 255, 0.836);
+    color: rgba(228, 40, 40, 0.9);
     font-size: 2rem;
 }
 
@@ -478,7 +478,7 @@
 }
 
 .contact-detail {
-    color: rgba(255, 255, 255, 0.836);
+    color: rgba(228, 40, 40, 0.9);
     font-size: 2rem;
 }
 .contact-detail:hover i {
@@ -495,7 +495,7 @@
 
 i {
     font-size: 3rem;
-    color: #c45d5d;
+    color: rgb(7, 205, 231);
 }
 
 .card-heading {
