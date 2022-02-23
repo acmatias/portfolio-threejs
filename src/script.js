@@ -190,9 +190,6 @@ gradientTexture.magFilter = THREE.NearestFilter
 const fog = new THREE.Fog('#262837', 55, 128)
 scene.fog = fog
 
-gui.add(fog, 'near').min(0).max(100).step(1).name('fog near')
-gui.add(fog, 'far').min(0).max(1000).step(1).name('fog far')
-
 // Water
 const waterGeometry = new THREE.PlaneGeometry(4, 4, 512, 512)
 
@@ -273,13 +270,6 @@ water.position.x = 0
 water.position.y = -2
 water.position.z = -25.5
 scene.add(water)
-
-gui.add(water.position, 'x').min(-50).max(50).step(0.001).name('waterPos X')
-gui.add(water.position, 'y').min(-50).max(50).step(0.001).name('waterPos Y')
-gui.add(water.position, 'z').min(-50).max(50).step(0.001).name('waterPos Z')
-gui.add(water.rotation, 'x').min(-10).max(10).step(0.001).name('waterRot x')
-gui.add(water.rotation, 'y').min(-10).max(10).step(0.001).name('waterRot y')
-gui.add(water.rotation, 'z').min(-10).max(10).step(0.001).name('waterRot z')
 
 // Meshes
 const objectDistance = 2
@@ -367,8 +357,6 @@ gltfLoader.load('/models/shark.glb', (gltf) => {
     sharkMixer = new THREE.AnimationMixer(gltf.scene)
     const sharkMove = sharkMixer.clipAction(getAnimation(gltf, 'sharkSwim'))
     sharkMove.play()
-
-    // gsap.to(gltf.scene.position, { duration: 10, x: 50 })
 })
 
 const boatGroup = new THREE.Group()
@@ -397,22 +385,17 @@ const flagMaterial = new THREE.ShaderMaterial({
     side: THREE.DoubleSide,
 })
 
-gui.add(flagMaterial.uniforms.uFrequency.value, 'x').min(0).max(20).step(0.01).name('frequencyX')
-gui.add(flagMaterial.uniforms.uFrequency.value, 'y').min(0).max(20).step(0.01).name('frequencyY')
-
 const flagMesh = new THREE.Mesh(flagGeometry, flagMaterial)
 flagMesh.scale.y = 2 / 3
 flagMesh.position.set(-0.02, 3.68, -21)
-// boatGroup.add(flagMesh)
 
 gltfLoader.load('/models/boat.glb', (gltf) => {
     gltf.scene.position.set(-3.5, -2, -25)
     gltf.scene.rotation.x = 0.2
     gltf.scene.rotation.y = -1.801
     boatGroup.add(gltf.scene)
-    gui.add(gltf.scene.rotation, 'y').min(-Math.PI).max(Math.PI).step(0.001).name('boatRotationY')
+
     const flag = scene.getObjectByName('flag')
-    // flagGeometry.setAttribute('aRandom', new THREE.BufferAttribute(flagRandoms, 1))
     flag.material = flagMaterial
     flag.geometry.setAttribute('aRandom', new THREE.BufferAttribute(flagRandoms, 1))
 })
@@ -430,29 +413,24 @@ gltfLoader.load('/models/fisher.glb', (gltf) => {
     fisherMove.play()
     fisherRodMove.play()
 })
-gui.add(boatGroup.position, 'y').min(-150).max(150).step(0.001).name('y')
+gui.add(boatGroup.rotation, 'y').min(-Math.PI).max(Math.PI).step(0.001).name('Boat Position Y')
 
 /**
  * Raycaster
  */
-const raycaster = new THREE.Raycaster()
+// const raycaster = new THREE.Raycaster()
 
 /**
  * Lights
  */
-const directionalLight = new THREE.DirectionalLight('#ffffff', 10)
-directionalLight.position.set(0.25, 5, 5)
-directionalLight.castShadow = true
-directionalLight.shadow.camera.far = 15
-directionalLight.shadow.mapSize.set(1024, 1024)
-directionalLight.shadow.normalBias = 0.015
+const directionalLight = new THREE.DirectionalLight('#ffffff', 5)
+directionalLight.position.set(5, 5, 5)
 scene.add(directionalLight)
 
-gui.add(directionalLight, 'intensity').min(0).max(10).step(0.001).name('moonLightIntensity')
-gui.add(directionalLight.position, 'x').min(-5).max(5).step(0.001).name('moonLightX')
-gui.add(directionalLight.position, 'y').min(-5).max(5).step(0.001).name('moonLightY')
-gui.add(directionalLight.position, 'z').min(-5).max(5).step(0.001).name('moonLightZ')
-gui.add(directionalLight.shadow, 'normalBias').min(0).max(0.1).step(0.0001)
+gui.add(directionalLight, 'intensity').min(0).max(10).step(0.001).name('Directional Light Intensity')
+gui.add(directionalLight.position, 'x').min(-5).max(5).step(0.001).name('Light X')
+gui.add(directionalLight.position, 'y').min(-5).max(5).step(0.001).name('Light Y')
+gui.add(directionalLight.position, 'z').min(-5).max(5).step(0.001).name('Light Z')
 
 /**
  * Sizes
@@ -504,7 +482,6 @@ renderer.toneMappingExposure = 0.3
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFShadowMap
 
-gui.add(renderer, 'toneMappingExposure').min(0).max(10).step(0.001)
 gui.add(renderer, 'toneMapping', {
     No: THREE.NoToneMapping,
     Linear: THREE.LinearToneMapping,
@@ -612,10 +589,10 @@ const tick = () => {
     // Flag animation
     flagMaterial.uniforms.uTime.value = elapsedTime
 
-    // Cast a ray
-    raycaster.setFromCamera(cursor, camera)
-    const objectsToTest = [tresureChestGroup]
-    const intersects = raycaster.intersectObjects(objectsToTest)
+    // // Cast a ray
+    // raycaster.setFromCamera(cursor, camera)
+    // const objectsToTest = [tresureChestGroup]
+    // const intersects = raycaster.intersectObjects(objectsToTest)
     // if (intersects.length) {
     //     if (currentIntersect === null) {
     //         console.log('mouse enter')

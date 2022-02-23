@@ -304,6 +304,7 @@
     height: 80%;
     padding: 1rem;
     font-size: 2rem;
+    text-align: center;
     letter-spacing: 0.1rem;
     font-size: 3rem;
     font-weight: 100px;
@@ -426,12 +427,6 @@
     align-items: center;
     position: relative;
 }
-.section-subheading {
-    font-family: 'Cantarell', sans-serif;
-    font-size: 3.5rem;
-    color: rgba(228, 40, 40, 0.836);
-}
-
 .contact-links {
     display: flex;
     justify-content: center;
@@ -485,12 +480,17 @@
 }
 
 .contact-location {
+    width: 100%;
     font-family: 'Cantarell', sans-serif;
     justify-content: space-between;
     align-self: center;
     text-align: center;
-    color: rgba(228, 40, 40, 0.9);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 2rem;
+}
+
+.contact-location h3 {
+    width: 100%;
 }
 
 .link {
@@ -506,7 +506,7 @@
 }
 
 .contact-detail {
-    color: rgba(228, 40, 40, 0.9);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 2rem;
 }
 .contact-detail:hover i {
