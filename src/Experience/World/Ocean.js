@@ -10,12 +10,23 @@ export default class Water {
         this.resources = this.experience.resources
         this.time = this.experience.time
 
+        // Setup
+        this.resource = this.resources.items.oceanScene
+
+        this.setModel()
         this.setGeometry()
         this.setTexture()
         this.setMaterial()
         this.setMesh()
     }
 
+    setModel() {
+        this.model = this.resource.scene
+        this.model.position.set(-3.5, -2, -25)
+        this.model.rotation.x = 0.2
+        this.model.rotation.y = -1.801
+        this.scene.add(this.model)
+    }
     setGeometry() {
         this.waterGeometry = new THREE.PlaneGeometry(4, 4, 512, 512)
     }

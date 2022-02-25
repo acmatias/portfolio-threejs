@@ -16,7 +16,7 @@ export default class World {
 
         this.resources.on('ready', () => {
             // Setup
-            this.island = new Island()
+            // this.island = new Island()
             this.ocean = new Ocean()
             this.boat = new Boat()
             this.diver = new Diver()
@@ -27,9 +27,6 @@ export default class World {
         })
     }
     update() {
-        if (this.island) {
-            this.island.update()
-        }
         if (this.ocean) {
             this.ocean.update()
         }
