@@ -33,6 +33,8 @@ menu.addEventListener('click', () => {
     menu.classList.toggle('change')
 })
 
+const test = {}
+
 /**
  * Loaders
  */
