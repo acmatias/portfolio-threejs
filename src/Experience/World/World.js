@@ -1,7 +1,6 @@
 import Experience from '../Experience.js'
 import Environment from './Environment.js'
 import Island from './Island.js'
-import Ocean from './Ocean.js'
 import Boat from './Boat.js'
 import Diver from './Diver.js'
 import Shark from './Shark.js'
@@ -16,8 +15,7 @@ export default class World {
 
         this.resources.on('ready', () => {
             // Setup
-            // this.island = new Island()
-            this.ocean = new Ocean()
+            this.island = new Island()
             this.boat = new Boat()
             this.diver = new Diver()
             this.shark = new Shark()
@@ -27,8 +25,8 @@ export default class World {
         })
     }
     update() {
-        if (this.ocean) {
-            this.ocean.update()
+        if (this.island) {
+            this.island.update()
         }
         if (this.boat) {
             this.boat.update()
