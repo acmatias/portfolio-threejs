@@ -27,6 +27,9 @@ export default class World {
         })
     }
     update() {
+        if (this.island) {
+            this.island.update()
+        }
         if (this.ocean) {
             this.ocean.update()
         }
