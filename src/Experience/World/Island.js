@@ -3,15 +3,20 @@ import Experience from '../Experience.js'
 import waterVertexShader from '../shaders/water/vertex.glsl'
 import waterFragmentShader from '../shaders/water/fragment.glsl'
 
+let instance = null
 export default class Island {
     constructor() {
+        if (instance) {
+            return instance
+        }
+        instance = this
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
         this.time = this.experience.time
 
         // Setup
-        this.resource = this.resources.items.oceanScene
+        this.resource = this.resources.items.islandModel
 
         this.setModel()
         this.setGeometry()
