@@ -1,8 +1,8 @@
 # Three.js Journey
 
-[Github](https://github.com/acmatias/portfolio-threejs)
+ - [Github](https://github.com/acmatias/portfolio-threejs)
 
-[Live](https://adrian-matias.vercel.app/)
+ - [Live](https://adrian-matias.vercel.app/)
 
 ## Setup
 Download [Node.js](https://nodejs.org/en/download/).
