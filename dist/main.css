@@ -2,7 +2,7 @@
 @import url(https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap);
 .stop-scrolling {
     height: 100%;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .loading-bar {

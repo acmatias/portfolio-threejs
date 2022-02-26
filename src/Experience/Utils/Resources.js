@@ -57,8 +57,7 @@ export default class Resources extends EventEmitter {
         this.items[source.name] = file
 
         this.loaded++
-        this.trigger('fileEnd', [source, file])
-
+        this.trigger('progress', [this.loaded / this.toLoad])
         if (this.loaded === this.toLoad) {
             this.trigger('ready')
         }

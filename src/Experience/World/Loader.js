@@ -1,33 +1,25 @@
 import * as THREE from 'three'
 import Experience from '../Experience.js'
+import gsap from 'gsap'
 
-export default class Overlay {
-    constructor() {
+const loadingBarElement = document.querySelector('.loading-bar')
+const scrollElement = document.querySelector('.stop-scrolling')
+
+export default class Loader {
+    constructor(_progress) {
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
+        this.progress = _progress
 
         this.setGeometry()
-        this.setTexture()
         this.setMaterial()
         this.setMesh()
+        this.setLoader()
     }
 
     setGeometry() {
         this.geometry = new THREE.PlaneGeometry(2, 2, 1, 1)
-    }
-    setTexture() {
-        this.texture = {}
-        this.texture.color = this.resources.items.dirtColorTexture
-        this.texture.encoding = THREE.sRGBEncoding
-        this.texture.color.repeat.set(1.5, 1.5)
-        this.texture.color.wrapS = THREE.RepeatWrapping
-        this.texture.color.wrapT = THREE.RepeatWrapping
-
-        this.texture.normal = this.resources.items.dirtNormalTexture
-        this.texture.normal.repeat.set(1.5, 1.5)
-        this.texture.normal.wrapS = THREE.RepeatWrapping
-        this.texture.normal.wrapT = THREE.RepeatWrapping
     }
     setMaterial() {
         this.material = new THREE.ShaderMaterial({
@@ -53,5 +45,16 @@ export default class Overlay {
     setMesh() {
         this.mesh = new THREE.Mesh(this.geometry, this.material)
         this.scene.add(this.mesh)
+    }
+
+    setLoader() {
+        loadingBarElement.style.transform = `scaleX(${this.progress})`
+        if ((this.progress = 1)) {
+            gsap.delayedCall(0.5, () => {
+                gsap.to(this.material.uniforms.uAlpha, { duration: 3, value: 0 })
+                scrollElement.classList.remove('stop-scrolling')
+                loadingBarElement.style.transform = ''
+            })
+        }
     }
 }

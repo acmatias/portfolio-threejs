@@ -6,12 +6,18 @@ import Diver from './Diver.js'
 import Shark from './Shark.js'
 import TresureChest from './TresureChest.js'
 import ClownFish from './ClownFish.js'
+import Loader from './Loader.js'
 
 export default class World {
     constructor() {
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
+
+        this.resources.on('progress', (_progress) => {
+            this.loader = new Loader(_progress)
+            console.log('loading', _progress)
+        })
 
         this.resources.on('ready', () => {
             // Setup
@@ -22,6 +28,7 @@ export default class World {
             this.clownFish = new ClownFish()
             this.tresureChest = new TresureChest()
             this.environment = new Environment()
+            console.log('ready')
         })
     }
     update() {
