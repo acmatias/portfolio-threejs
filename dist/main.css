@@ -513,13 +513,14 @@
 }
 
 .contact-location {
-    width: 100%;
     font-family: 'Cantarell', sans-serif;
     justify-content: space-between;
     align-self: center;
     text-align: center;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(221, 23, 23, 0.9);
     font-size: 2rem;
+    background-color: #ffffff93;
+    border-radius: 5px;
 }
 
 .contact-location h3 {
@@ -532,6 +533,8 @@
     text-align: center;
     transition: 0.2s;
     font-family: 'Cantarell', sans-serif;
+    background-color: #ffffff93;
+    border-radius: 5px;
 }
 
 .link:hover {
@@ -539,9 +542,13 @@
 }
 
 .contact-detail {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(221, 23, 23, 0.9);
     font-size: 2rem;
 }
+/* .contact-detail:hover {
+    background-color: rgba(255, 255, 255, 1);
+} */
+
 .contact-detail:hover i {
     animation: shake 0.5s;
     animation-iteration-count: infinite;
@@ -556,7 +563,7 @@
 
 i {
     font-size: 3rem;
-    color: rgb(7, 205, 231);
+    color: rgb(26, 192, 243);
 }
 
 .card-heading {
